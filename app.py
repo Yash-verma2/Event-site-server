@@ -35,9 +35,29 @@ def health():
 @app.route('/')
 def landing():
     try:
-        return render_template('index.html')
+        return render_template('landing.html')
     except TemplateNotFound:
-        return 
+        # Fallback to a simple HTML page
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Birthday Page Generator</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+                <h1 class="text-2xl font-bold text-blue-600 mb-4">🎉 Birthday Page Generator</h1>
+                <p class="text-gray-600 mb-4">Template files are being set up. Please check back soon!</p>
+                <div class="space-y-2">
+                    <a href="/test" class="block text-blue-500 hover:underline">Test Backend</a>
+                    <a href="/health" class="block text-blue-500 hover:underline">Health Check</a>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
 
 # ------------------------ GENERATOR ----------------------------
 @app.route('/generate', methods=['POST'])
@@ -70,48 +90,50 @@ def generate():
         os.makedirs(asset_dir, exist_ok=True)
 
         # ------------ MAIN IMAGE ------------
-        f = request.files.get("main_image")
+        main_file = request.files.get("main_image")
         main_image = None
-        if f and allowed(f.filename, ALLOWED_IMAGES):
-            filename = uid + "_main_" + secure_filename(f.filename)
-            f.save(os.path.join(asset_dir, filename))
+        if main_file and allowed(main_file.filename, ALLOWED_IMAGES):
+            filename = uid + "_main_" + secure_filename(main_file.filename)
+            filepath = os.path.join(asset_dir, filename)
+            main_file.save(filepath)
             main_image = url_for("assets", uid=uid, filename=filename, _external=True)
 
         # ------------ GIFT IMAGE ------------
         gift_image_selected = request.form.get('gift_image_selected')
-        f = request.files.get("gift_image")
+        gift_file = request.files.get("gift_image")
         
-        if f and allowed(f.filename, ALLOWED_IMAGES):
-            filename = uid + "_gift_" + secure_filename(f.filename)
-            f.save(os.path.join(asset_dir, filename))
+        gift_image = "/static/default_gift.png"  # default
+        if gift_file and allowed(gift_file.filename, ALLOWED_IMAGES):
+            filename = uid + "_gift_" + secure_filename(gift_file.filename)
+            filepath = os.path.join(asset_dir, filename)
+            gift_file.save(filepath)
             gift_image = url_for("assets", uid=uid, filename=filename, _external=True)
         elif gift_image_selected:
             gift_image = gift_image_selected
-        else:
-            gift_image = "/static/default_gift.png"
 
         # ------------ MUSIC ------------
         music_selected = request.form.get('music_selected')
         music_option = request.form.get('music_option')
-        f = request.files.get("music")
+        music_file = request.files.get("music")
 
-        if f and f.filename and allowed(f.filename, ALLOWED_MUSIC):
-            filename = uid + "_music_" + secure_filename(f.filename)
-            f.save(os.path.join(asset_dir, filename))
+        music = "/static/default_music.mp3"  # default
+        if music_file and music_file.filename and allowed(music_file.filename, ALLOWED_MUSIC):
+            filename = uid + "_music_" + secure_filename(music_file.filename)
+            filepath = os.path.join(asset_dir, filename)
+            music_file.save(filepath)
             music = url_for("assets", uid=uid, filename=filename, _external=True)
         elif music_selected and music_selected.strip():
             music = music_selected.strip()
         elif music_option and music_option.strip():
             music = music_option.strip()
-        else:
-            music = "/static/default_music.mp3"
 
         # ------------ GALLERY IMAGES ------------
         gallery_images = []
-        for f in request.files.getlist("gallery")[:MAX_GALLERY]:
-            if f and allowed(f.filename, ALLOWED_IMAGES):
-                filename = uid + "_g_" + secure_filename(f.filename)
-                f.save(os.path.join(asset_dir, filename))
+        for gallery_file in request.files.getlist("gallery")[:MAX_GALLERY]:
+            if gallery_file and allowed(gallery_file.filename, ALLOWED_IMAGES):
+                filename = uid + "_g_" + secure_filename(gallery_file.filename)
+                filepath = os.path.join(asset_dir, filename)
+                gallery_file.save(filepath)
                 gallery_images.append(url_for("assets", uid=uid, filename=filename, _external=True))
 
         # ------------ Render Selected Template ------------
@@ -128,15 +150,68 @@ def generate():
             )
         except TemplateNotFound:
             # Fallback to simple template
-            html = f
+            html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>{title} {name}</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+            </head>
+            <body class="min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-pink-400 to-purple-600">
+                <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
+                    <h1 class="text-4xl font-bold text-purple-700 mb-4">{title} {name}! 🎉</h1>
+                    <div class="space-y-4 mb-6">
+                        {"".join([f'<p class="text-lg text-gray-700">{message}</p>' for message in messages])}
+                    </div>
+                    {f'<img src="{main_image}" alt="Main" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-purple-500">' if main_image else ''}
+                    <audio autoplay loop>
+                        <source src="{music}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    {f'<a href="{url_for("gallery_page", uid=uid, _external=True)}" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition duration-300">View Gallery 📸</a>' if gallery_images else ''}
+                    <div class="mt-4">
+                        <a href="/" class="inline-block bg-gray-600 text-white px-6 py-3 rounded-full hover:bg-gray-700 transition duration-300">Create Another Page</a>
+                    </div>
+                </div>
+            </body>
+            </html>
+            """
 
-        with open(os.path.join(base, "index.html"), "w", encoding="utf-8") as f:
-            f.write(html)
+        # Write the main page - FIXED: Use different variable name
+        with open(os.path.join(base, "index.html"), "w", encoding="utf-8") as html_file:
+            html_file.write(html)
 
         # ------------ Render Gallery Page ------------
-        gallery_html = f
-        with open(os.path.join(base, "gallery.html"), "w", encoding="utf-8") as f:
-            f.write(gallery_html)
+        if gallery_images:
+            gallery_html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Gallery - {title} {name}</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+            </head>
+            <body class="bg-gradient-to-br from-blue-400 to-purple-600 min-h-screen p-8">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl font-bold text-white text-center mb-8">Gallery for {name}</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {"".join([f'<img src="{img}" alt="Gallery image" class="w-full h-64 object-cover rounded-lg shadow-lg">' for img in gallery_images])}
+                    </div>
+                    <div class="text-center mt-8">
+                        <a href="{url_for('serve_generated', uid=uid, _external=True)}" class="inline-block bg-white text-purple-600 px-6 py-3 rounded-full hover:bg-gray-100 transition duration-300">
+                            ← Back to Main Page
+                        </a>
+                    </div>
+                </div>
+                <audio autoplay loop>
+                    <source src="{music}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </body>
+            </html>
+            """
+
+            with open(os.path.join(base, "gallery.html"), "w", encoding="utf-8") as gallery_file:
+                gallery_file.write(gallery_html)
 
         # ------------ FINAL LINK ------------
         base_url = os.environ.get('RENDER_EXTERNAL_URL', request.host_url.rstrip('/'))
@@ -149,6 +224,8 @@ def generate():
 
     except Exception as e:
         print(f"Error in generate: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return jsonify({"error": str(e)}), 500
         else:

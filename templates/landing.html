@@ -42,6 +42,18 @@
         <h1 class="text-3xl font-bold mb-6 text-sky-700 dark:text-sky-400 transition-colors duration-500">Generate a Birthday Page 🥳</h1>
 
         <form id="birthdayForm" enctype="multipart/form-data" class="space-y-4 text-left">
+            
+            <!-- Template Selector - Simplified -->
+            <div>
+                <label for="template" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Template</label>
+                <select id="template" name="template"
+                    class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
+                    <option value="birthday.html" selected>🎂 Birthday Template</option>
+                    <option value="anniversary.html">💖 Anniversary Template</option>
+                    <option value="congratulations.html">🎊 Congratulations Template</option>
+                </select>
+            </div>
+
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name of Birthday Person</label>
                 <input type="text" id="name" name="name" placeholder="Shristi" required
