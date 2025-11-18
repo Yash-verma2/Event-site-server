@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Page Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                },
+            }
+        }
+    </script>
+    <style>
+        .gift-options::-webkit-scrollbar {
+            height: 8px;
+        }
+        .gift-options::-webkit-scrollbar-thumb {
+            background-color: #0369a160;
+            border-radius: 4px;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-white dark:from-gray-900 dark:to-[#070c13] min-h-screen flex justify-center items-center p-4 sm:p-8 font-sans transition-colors duration-500">
+    
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <div class="bg-white/95 backdrop-blur-sm dark:bg-[#070c13]/70 p-6 sm:p-8 rounded-3xl shadow-2xl max-w-xl w-full text-center border border-gray-100/50 dark:border-gray-700/50 transition-colors duration-500">
+        <h1 class="text-3xl font-bold mb-6 text-sky-700 dark:text-sky-400 transition-colors duration-500">Generate a Birthday Page 🥳</h1>
+
+        <form id="birthdayForm" enctype="multipart/form-data" class="space-y-4 text-left">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name of Birthday Person</label>
+                <input type="text" id="name" name="name" placeholder="Shristi" required
+                       class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150">
+            </div>
+
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Page Title</label>
+                <input type="text" id="title" name="title" placeholder="Happy Birthday!"
+                       class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150">
+            </div>
+
+            <div>
+                <label for="messages" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Messages (one per line)</label>
+                <textarea id="messages" name="messages" rows="4" placeholder="Write messages, each on a new line"
+                          class="mt-1 w-full p-3 border border-gray-300 rounded-xl resize-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150"></textarea>
+            </div>
+
+            <div>
+                <label for="main_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Main Image</label>
+                <input type="file" id="main_image" name="main_image" accept="image/*" required
+                       class="mt-1 w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-sky-700 text-white text-lg font-semibold rounded-xl hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 transition duration-300 shadow-md hover:shadow-lg mt-6">
+                🚀 Generate Page
+            </button>
+        </form>
+
+        <div id="generatedLinkContainer" class="hidden mt-8 p-4 bg-gray-50/50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+            <p class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Your birthday page is ready! 🎉</p>
+            <input type="text" id="generatedLink" readonly
+                   class="w-full p-3 border border-gray-300 rounded-lg text-center bg-white dark:bg-gray-700 mb-4 text-gray-600 dark:text-gray-300 font-mono text-sm select-all cursor-text">
+            <button class="w-full py-3 bg-emerald-600 text-white text-base font-semibold rounded-xl hover:bg-emerald-700 transition duration-300" onclick="visitPage()">
+                View Page
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showToast(message, isError = false) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = isError ? 'bg-amber-500 dark:bg-amber-400' : 'bg-emerald-600 dark:bg-emerald-400';
+            const title = isError ? 'Error' : 'Success';
+
+            toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg transition duration-300 transform translate-x-full opacity-0 max-w-xs`;
+            toast.innerHTML = `<div class="font-semibold">${title}</div><div>${message}</div>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+                toast.classList.add('translate-x-0', 'opacity-100');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0', 'opacity-100');
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, 4000);
+        }
+
+        document.getElementById('birthdayForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            showToast("Generating page...", false);
+
+            fetch("/generate", {
+                method: "POST",
+                body: formData,
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Server responded with ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                document.getElementById('generatedLink').value = data.link;
+                document.getElementById('generatedLinkContainer').style.display = "block";
+                showToast("Page generated successfully!", false);
+            })
+            .catch(err => {
+                console.error('Fetch error:', err);
+                showToast("Error generating page: " + err.message, true);
+            });
+        });
+
+        function visitPage() {
+            const link = document.getElementById('generatedLink').value;
+            if(link) window.open(link, "_blank");
+        }
+    </script>
+</body>
+</html>

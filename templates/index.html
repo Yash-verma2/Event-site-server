@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark"> <!-- Added 'dark' class for initial dark mode styling -->
+<html lang="en" class="dark">
 <head>
   <meta charset="utf-8">
   <title>Birthday Page Generator</title>
@@ -9,7 +9,7 @@
   <!-- Configure Tailwind to use Inter font -->
   <script>
     tailwind.config = {
-      darkMode: 'class', // Enable class-based dark mode
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -25,19 +25,15 @@
       height: 8px;
     }
     .gift-options::-webkit-scrollbar-thumb {
-      background-color: #0369a160; /* Sky Blue */
+      background-color: #0369a160;
       border-radius: 4px;
     }
-    .gift-options::-webkit-webkit-scrollbar-track {
-      background-color: #f3f4f6; /* Gray-100 */
-    }
-    /* Simple utility to hide the scrollbar track when not hovering */
     .scrollbar-hide {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
     .scrollbar-hide::-webkit-scrollbar {
-      display: none; /* Chrome, Safari and Opera */
+      display: none;
     }
   </style>
 </head>
@@ -47,13 +43,22 @@
   <!-- Message/Toast Container -->
   <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-  <!-- Main Card Container: Applied requested glass background -->
+  <!-- Main Card Container -->
   <div class="bg-white/95 backdrop-blur-sm dark:bg-[#070c13]/70 p-6 sm:p-8 rounded-3xl shadow-2xl max-w-xl w-full text-center border border-gray-100/50 dark:border-gray-700/50 transition-colors duration-500">
     <h1 class="text-3xl font-bold mb-6 text-sky-700 dark:text-sky-400 transition-colors duration-500">Generate a Birthday Page 🥳</h1>
 
     <form id="birthdayForm" enctype="multipart/form-data" class="space-y-4 text-left">
 
-      <!-- Form Field Group: Name and Title -->
+      <!-- Template Selector -->
+      <select id="template_selector" name="template"
+        class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
+        <option value="birthday.html" selected>Birthday Template</option>
+        <option value="anniversary.html">Anniversary Template</option>
+        <option value="congratulations.html">Congratulations Template</option>
+        <option value="custom.html">Custom Template</option>
+      </select>
+
+      <!-- Name and Title -->
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name of Birthday Person</label>
         <input type="text" id="name" name="name" placeholder="Shristi" required
@@ -66,25 +71,24 @@
                class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150">
       </div>
 
-      <!-- Form Field Group: Messages -->
+      <!-- Messages -->
       <div>
         <label for="messages" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Messages (one per line)</label>
         <textarea id="messages" name="messages" rows="4" placeholder="Write messages, each on a new line"
                   class="mt-1 w-full p-3 border border-gray-300 rounded-xl resize-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150"></textarea>
       </div>
 
-      <!-- Form Field Group: Main Image -->
+      <!-- Main Image -->
       <div>
         <label for="main_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Main Image</label>
         <input type="file" id="main_image" name="main_image" accept="image/*" required
                class="mt-1 w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
       </div>
 
-      <!-- Form Field Group: Gift Options (Scrollable) -->
+      <!-- Gift Options -->
       <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gift Image (Choose or Upload)</label>
         <div class="gift-options flex space-x-4 pb-3 mb-4 overflow-x-scroll scrollbar-hide">
-          <!-- Add more options here if needed, the scrollable layout handles them -->
           <img src="https://placehold.co/80x80/0369a1/ffffff?text=Gift+1" alt="Gift Option 1" onclick="selectGift(this)" data-gift-path="/static/gift1.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
           <img src="https://placehold.co/80x80/0369a1/ffffff?text=Gift+2" alt="Gift Option 2" onclick="selectGift(this)" data-gift-path="/static/gift2.png"
@@ -104,36 +108,34 @@
                class="w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
       </div>
 
-     <!-- Form Field Group: Music Options (Select) -->
-<div class="border-t pt-4 border-gray-100 dark:border-gray-700">
-  <label for="music_selector" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Background Music (Choose Track)</label>
-  
-  <!-- Fix these paths to be consistent -->
-<select id="music_selector" name="music_option" 
-class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
-    <option value="" selected>-- Select a pre-set music track --</option>
-    <option value="C:\Users\yashv\OneDrive\Desktop\Birthday-side genaretor\templates\static\music\happy-birthday-138622.mp3">Track 1 - Happy Pop</option>
-    <option value="/static/music/happy-birthday-254480.mp3">Track 2 - Gentle Waltz</option>
-    <option value="/static/music3.mp3">Track 3 - Electronic Beat</option>
-    <option value="/static/music4.mp3">Track 4 - Classic Ballad</option>
-    <option value="/static/music5.mp3">Track 5 - Upbeat Ukulele</option>
-</select>
+      <!-- Music Options -->
+      <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
+        <label for="music_selector" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Background Music (Choose Track)</label>
+        
+        <select id="music_selector" name="music_option" 
+          class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
+          <option value="" selected>-- Select a pre-set music track --</option>
+          <option value="{{ url_for('static', filename='music/happy-birthday-138622.mp3') }}">Track 1 - Happy Pop</option>
+          <option value="{{ url_for('static', filename='music/happy-birthday-254480.mp3') }}">Track 2 - Gentle Waltz</option>
+          <option value="{{ url_for('static', filename='music/music3.mp3') }}">Track 3 - Electronic Beat</option>
+          <option value="{{ url_for('static', filename='music/music4.mp3') }}">Track 4 - Classic Ballad</option>
+          <option value="{{ url_for('static', filename='music/music5.mp3') }}">Track 5 - Upbeat Ukulele</option>
+        </select>
 
-  <!-- Add this hidden input to track the selected preset music -->
- <!-- Inside your music section, add this hidden input -->
-<input type="hidden" name="music_selected" id="music_selected" value="">
+        <input type="hidden" name="music_selected" id="music_selected" value="">
 
-  <!-- 🎵 Music Preview Player -->
-  <audio id="music_preview" controls class="mt-3 hidden w-full">
-    <source id="music_preview_source" src="" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+        <!-- Music Preview Player -->
+        <audio id="music_preview" controls class="mt-3 hidden w-full">
+          <source id="music_preview_source" src="" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
 
-  <label for="music_upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Or upload your own Music File (optional)</label>
-  <input type="file" name="music" id="music_upload" accept="audio/*"
-         class="w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-</div>
-      <!-- Form Field Group: Gallery Images -->
+        <label for="music_upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Or upload your own Music File (optional)</label>
+        <input type="file" name="music" id="music_upload" accept="audio/*"
+               class="w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+      </div>
+
+      <!-- Gallery Images -->
       <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
         <label for="gallery" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gallery Images (up to 8)</label>
         <input type="file" id="gallery" name="gallery" accept="image/*" multiple
@@ -143,25 +145,6 @@ class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 fo
       <button type="submit" class="w-full py-3 bg-sky-700 text-white text-lg font-semibold rounded-xl hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 transition duration-300 shadow-md hover:shadow-lg mt-6">
         🚀 Generate Page
       </button>
-
-       <!-- Add this inside your form, at the top, before Name & Title fields -->
-<select id="template_selector" name="template"
-        class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
-    <option value="birthday.html" data-preview="C:\Users\yashv\OneDrive\Desktop\Birthday-side genaretor\templates\static\previews\birthday.png" selected>Birthday Template</option>
-    <option value="anniversary.html" data-preview="/static/previews/anniversary.png">Anniversary Template</option>
-    <option value="congratulations.html" data-preview="/static/previews/congratulations.png">Congratulations Template</option>
-    <option value="custom.html" data-preview="/static/previews/custom.png">Custom Template</option>
-</select>
-
-
-<!-- Template Preview -->
-<div id="templatePreviewContainer" class="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800/50 text-center">
-    <p class="text-gray-700 dark:text-gray-300 mb-2">Template Preview:</p>
-    <img id="templatePreview" src="C:\Users\yashv\OneDrive\Desktop\Birthday-side genaretor\templates\static\previews\birthday.png" alt="Template Preview" class="mx-auto max-h-48 rounded-xl shadow-lg transition-all duration-300">
-</div>
-
-
-
     </form>
 
     <!-- Generated Link Section -->
@@ -177,23 +160,18 @@ class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 fo
     <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Share your page link easily:</p>
       <div class="share-buttons flex justify-center space-x-4 flex-wrap gap-3">
-        <!-- Copy Link (Primary Action) -->
         <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-sky-700 hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 shadow-md" onclick="copyLink()">
           Copy Link
         </button>
-        <!-- WhatsApp (Brand Color) -->
         <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-[#25D366] hover:bg-[#128C7E]" onclick="shareWhatsApp()">
           WhatsApp
         </button>
-        <!-- Facebook (Brand Color) -->
         <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-[#4267B2] hover:bg-[#365899]" onclick="shareFacebook()">
           Facebook
         </button>
-        <!-- Twitter (Brand Color) -->
         <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-[#1DA1F2] hover:bg-[#0c85d0]" onclick="shareTwitter()">
           X / Twitter
         </button>
-        <!-- Generic Share (Uses native Web Share API for Instagram, Telegram, etc.) -->
         <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-violet-600 hover:bg-violet-700" onclick="sharePage()">
           Share (Instagram, etc.)
         </button>
@@ -201,135 +179,78 @@ class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 fo
     </div>
   </div>
 
- 
   <script>
+    // Music Preview with Error Handling
+    document.getElementById("music_selector").addEventListener("change", function () {
+      const audio = document.getElementById("music_preview");
+      const source = document.getElementById("music_preview_source");
+      const selected = this.value;
 
-   // 🎵 Preview preset music tracks and store selection
-document.getElementById("music_selector").addEventListener("change", function () {
-    const audio = document.getElementById("music_preview");
-    const source = document.getElementById("music_preview_source");
-    const selected = this.value;
-
-    if (selected) {
+      if (selected) {
         source.src = selected;
         audio.classList.remove("hidden");
+        
+        audio.pause();
+        audio.currentTime = 0;
         audio.load();
-        audio.play();
         
-        // Store the selected preset music path
+        const playAudio = async () => {
+          try {
+            await audio.play();
+          } catch (error) {
+            console.log("Preview play failed:", error);
+          }
+        };
+        
+        playAudio();
+        
         document.getElementById("music_selected").value = selected;
-        
-        // Clear uploaded file
         document.getElementById("music_upload").value = "";
-    } else {
+      } else {
         audio.pause();
         audio.classList.add("hidden");
         document.getElementById("music_selected").value = "";
-    }
-});
+      }
+    });
 
-// 🎵 Preview preset music tracks and store selection
-document.getElementById("music_selector").addEventListener("change", function () {
-    const audio = document.getElementById("music_preview");
-    const source = document.getElementById("music_preview_source");
-    const selected = this.value;
+    // Uploaded Music Preview
+    document.getElementById("music_upload").addEventListener("change", function () {
+      const file = this.files[0];
+      const audio = document.getElementById("music_preview");
+      const source = document.getElementById("music_preview_source");
 
-    console.log("Music selector changed to:", selected); // Debug log
-
-    if (selected) {
-        source.src = selected;
-        audio.classList.remove("hidden");
-        audio.load();
-        audio.play();
-        
-        // Store the selected preset music path in both hidden input and the select itself
-        document.getElementById("music_selected").value = selected;
-        
-        // Clear uploaded file
-        document.getElementById("music_upload").value = "";
-    } else {
-        audio.pause();
-        audio.classList.add("hidden");
-        document.getElementById("music_selected").value = "";
-    }
-});
-
-// 🎵 Preview uploaded custom music and clear preset
-document.getElementById("music_upload").addEventListener("change", function () {
-    const file = this.files[0];
-    const audio = document.getElementById("music_preview");
-    const source = document.getElementById("music_preview_source");
-
-    console.log("Music upload changed:", file ? file.name : "None"); // Debug log
-
-    if (file) {
+      if (file) {
         const url = URL.createObjectURL(file);
         source.src = url;
         audio.classList.remove("hidden");
+        
+        audio.pause();
+        audio.currentTime = 0;
         audio.load();
-        audio.play();
+        
+        const playAudio = async () => {
+          try {
+            await audio.play();
+          } catch (error) {
+            console.log("Upload preview play failed:", error);
+          }
+        };
+        
+        playAudio();
 
-        // Clear preset selection
         document.getElementById("music_selector").value = "";
         document.getElementById("music_selected").value = "";
-    } else {
+      } else {
         audio.pause();
         audio.classList.add("hidden");
-    }
-});
+      }
+    });
 
-// Also add form submission debug
-document.getElementById('birthdayForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const formData = new FormData(this);
-  
-  // Debug: Log what's in the form data
-  console.log("=== Form Data ===");
-  for (let [key, value] of formData.entries()) {
-    console.log(key + ": " + value);
-  }
-
-  // Show a temporary loading message
-  showToast("Generating page...", false);
-
-  fetch("https://event-site-server.onrender.com/generate", {
-    method: "POST",
-    body: formData,
-    headers: {'X-Requested-With': 'XMLHttpRequest'}
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('generatedLink').value = data.link;
-    document.getElementById('generatedLinkContainer').style.display = "block";
-    showToast("Page generated successfully!", false);
-  })
-  .catch(err => {
-    console.error(err);
-    showToast("Error generating page! Please check the server status.", true);
-  });
-});
-
-    // Update preview image when template is selected
-const templateSelector = document.getElementById('template_selector');
-const templatePreview = document.getElementById('templatePreview');
-
-templateSelector.addEventListener('change', () => {
-    const selectedOption = templateSelector.selectedOptions[0];
-    const previewSrc = selectedOption.getAttribute('data-preview');
-    if(previewSrc) {
-        templatePreview.src = previewSrc;
-    }
-});
-
-
-
-
-    // Helper function to show notifications instead of alert()
+    // Toast Notification
     function showToast(message, isError = false) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       
-      // Updated colors: Success (Emerald), Error/Warning (Amber)
       const bgColor = isError ? 'bg-amber-500 dark:bg-amber-400' : 'bg-emerald-600 dark:bg-emerald-400';
       const title = isError ? 'Error' : 'Success';
 
@@ -338,66 +259,65 @@ templateSelector.addEventListener('change', () => {
 
       container.appendChild(toast);
 
-      // Animate in
       setTimeout(() => {
         toast.classList.remove('translate-x-full', 'opacity-0');
         toast.classList.add('translate-x-0', 'opacity-100');
       }, 10);
 
-      // Animate out and remove
       setTimeout(() => {
         toast.classList.remove('translate-x-0', 'opacity-100');
         toast.classList.add('translate-x-full', 'opacity-0');
-        // Remove after transition
         setTimeout(() => {
           container.removeChild(toast);
         }, 300);
       }, 4000);
     }
 
-    // Gift selection logic - now uses data-gift-path and handles selection styling
+    // Gift Selection
     function selectGift(img) {
-      // Use the static path for submission, not the placeholder URL
       const selectedPath = img.getAttribute('data-gift-path');
 
       document.querySelectorAll('.gift-options img').forEach(i => i.classList.remove('border-sky-700', 'dark:border-sky-400', 'shadow-lg'));
       
-      // Updated classes for Sky Blue accent
       img.classList.add('border-sky-700', 'dark:border-sky-400', 'shadow-lg');
       
-      // Update the hidden input value to be passed with the form data
       document.getElementById('gift_image_selected').value = selectedPath;
-
-      // Optional: Clear any user-uploaded file when a preset is selected
       document.getElementById('gift_image_upload').value = '';
     }
 
-    // AJAX form submit
+    // Form Submission
     document.getElementById('birthdayForm').addEventListener('submit', function(e){
       e.preventDefault();
       const formData = new FormData(this);
 
-      // Show a temporary loading message
       showToast("Generating page...", false);
 
-      // The working principle (URL and method) is strictly maintained
-      fetch("https://event-site-server.onrender.com/generate", {
+      fetch("/generate", {
         method: "POST",
         body: formData,
         headers: {'X-Requested-With': 'XMLHttpRequest'}
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
+        if (data.error) {
+          throw new Error(data.error);
+        }
         document.getElementById('generatedLink').value = data.link;
         document.getElementById('generatedLinkContainer').style.display = "block";
         showToast("Page generated successfully!", false);
       })
       .catch(err => {
-        console.error(err);
-        showToast("Error generating page! Please check the server status.", true);
+        console.error('Fetch error:', err);
+        showToast("Error generating page: " + err.message, true);
       });
     });
 
+    // Utility Functions
     function visitPage() {
       const link = document.getElementById('generatedLink').value;
       if(link) window.open(link, "_blank");
@@ -406,8 +326,6 @@ templateSelector.addEventListener('change', () => {
     function getGeneratedLink() {
       return document.getElementById('generatedLink').value || "";
     }
-
-    // Share Functions
 
     function shareWhatsApp() {
       const link = getGeneratedLink();
@@ -428,95 +346,61 @@ templateSelector.addEventListener('change', () => {
       else showToast("Please generate a link first.", true);
     }
 
-    // Uses the Web Share API (ideal for mobile/Instagram/Telegram)
     async function sharePage() {
-        const link = getGeneratedLink();
-        const title = document.getElementById('title').value || "Birthday Page";
-        if (!link) {
-            showToast("Please generate a link first.", true);
-            return;
-        }
+      const link = getGeneratedLink();
+      const title = document.getElementById('title').value || "Birthday Page";
+      if (!link) {
+        showToast("Please generate a link first.", true);
+        return;
+      }
 
-        if (navigator.share) {
-            try {
-                // Use a descriptive text for platforms that support it
-                await navigator.share({
-                    title: title,
-                    text: `Check out this birthday page for ${document.getElementById('name').value}!`,
-                    url: link
-                });
-            } catch (error) {
-                // Error handling for user cancellation or permission denied
-                if (error.name !== 'AbortError') {
-                    showToast("Could not initiate native share. Copying link instead.", true);
-                    copyLink();
-                }
-            }
-        } else {
-            // Fallback for desktop or non-supported browsers
-            showToast("Native share not supported. The link has been copied for manual sharing.", true);
-            copyLink(); // Auto-copy the link
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: title,
+            text: `Check out this birthday page for ${document.getElementById('name').value}!`,
+            url: link
+          });
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            copyLink();
+          }
         }
+      } else {
+        copyLink();
+      }
     }
 
     function copyLink() {
       const link = getGeneratedLink();
       if(link) {
-        // Use modern clipboard API and fall back to execCommand if needed
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(link).then(() => {
-                showToast("Link copied to clipboard!");
-            }).catch(err => {
-                // Fallback for restricted environments
-                const linkInput = document.getElementById('generatedLink');
-                linkInput.select();
-                document.execCommand('copy');
-                showToast("Link copied to clipboard (using fallback)!");
-            });
-        } else {
+          navigator.clipboard.writeText(link).then(() => {
+            showToast("Link copied to clipboard!");
+          }).catch(err => {
             const linkInput = document.getElementById('generatedLink');
             linkInput.select();
             document.execCommand('copy');
-            showToast("Link copied to clipboard (using fallback)!");
+            showToast("Link copied to clipboard!");
+          });
+        } else {
+          const linkInput = document.getElementById('generatedLink');
+          linkInput.select();
+          document.execCommand('copy');
+          showToast("Link copied to clipboard!");
         }
       } else {
         showToast("Please generate a link first.", true);
       }
     }
 
-    // Set a default gift selection visually on load
+    // Set default gift selection on load
     document.addEventListener('DOMContentLoaded', () => {
-        const defaultGift = document.querySelector('.gift-options img:first-child');
-        if (defaultGift) {
-            selectGift(defaultGift);
-        }
+      const defaultGift = document.querySelector('.gift-options img:first-child');
+      if (defaultGift) {
+        selectGift(defaultGift);
+      }
     });
-
-    document.getElementById('birthdayForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const formData = new FormData(this);
-
-  // Show a temporary loading message
-  showToast("Generating page...", false);
-
-  fetch("https://event-site-server.onrender.com/generate", {
-    method: "POST",
-    body: formData,
-    headers: {'X-Requested-With': 'XMLHttpRequest'}
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('generatedLink').value = data.link;
-    document.getElementById('generatedLinkContainer').style.display = "block";
-    showToast("Page generated successfully!", false);
-  })
-  .catch(err => {
-    console.error(err);
-    showToast("Error generating page! Please check the server status.", true);
-  });
-});
-
-
   </script>
 </body>
 </html>
