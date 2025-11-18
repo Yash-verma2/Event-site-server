@@ -52,8 +52,8 @@
       <!-- Template Selector -->
       <select id="template_selector" name="template"
         class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
-        <option value="birthday.html" data-preview="https://freeimage.host/i/fd33Wl4" selected>Birthday Template</option>
-        <option value="anniversary.html" data-preview="/static/previews/anniversary.png">Anniversary Template</option>
+        <option value="birthday.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png" selected>Birthday Template</option>
+        <option value="anniversary.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/anversary-preview.png">Anniversary Template</option>
         <option value="congratulations.html" data-preview="/static/previews/congratulations.png">Congratulations Template</option>
         <option value="custom.html" data-preview="/static/previews/custom.png">Custom Template</option>
       </select>
@@ -61,7 +61,7 @@
       <!-- Template Preview -->
       <div id="templatePreviewContainer" class="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800/50 text-center">
         <p class="text-gray-700 dark:text-gray-300 mb-2">Template Preview:</p>
-        <img id="templatePreview" src="https://freeimage.host/i/fd33Wl4" alt="Template Preview" class="mx-auto max-h-48 rounded-xl shadow-lg transition-all duration-300">
+        <img id="templatePreview" src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png" alt="Template Preview" class="mx-auto max-h-48 rounded-xl shadow-lg transition-all duration-300">
       </div>
 
       <!-- Name and Title -->
@@ -97,13 +97,13 @@
         <div class="gift-options flex space-x-4 pb-3 mb-4 overflow-x-scroll scrollbar-hide">
           <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png" alt="Gift Option 1" onclick="selectGift(this)" data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="templates/static/previews/Gemini_Generated_Image_yqya9dyqya9dyqya.png" alt="Gift Option 2" onclick="selectGift(this)" data-gift-path="/static/gift2.png"
+          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png" alt="Gift Option 2" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://placehold.co/80x80/0369a1/ffffff?text=Gift+3" alt="Gift Option 3" onclick="selectGift(this)" data-gift-path="/static/gift3.png"
+          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift2.png" alt="Gift Option 3" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift2.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://placehold.co/80x80/0369a1/ffffff?text=Gift+4" alt="Gift Option 4" onclick="selectGift(this)" data-gift-path="/static/gift4.png"
+          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift3.png" alt="Gift Option 4" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift3.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://placehold.co/80x80/0369a1/ffffff?text=Gift+5" alt="Gift Option 5" onclick="selectGift(this)" data-gift-path="/static/gift5.png"
+          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png" alt="Gift Option 5" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
         </div>
         
@@ -121,11 +121,11 @@
         <select id="music_selector" name="music_option" 
           class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
           <option value="" selected>-- Select a pre-set music track --</option>
-          <option value="templates//static//music//hb1.mp3">Track 1 - Happy Pop</option>
-          <option value="templates//static//music//happy-birthday-254480.mp3">Track 2 - Gentle Waltz</option>
-          <option value="/static/music/music3.mp3">Track 3 - Electronic Beat</option>
-          <option value="/static/music/music4.mp3">Track 4 - Classic Ballad</option>
-          <option value="/static/music/music5.mp3">Track 5 - Upbeat Ukulele</option>
+          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb1.mp3">Track 1 - Happy Birthday 01</option>
+          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb2.mp3">Track 2 - Happy Birthday 02</option>
+          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb3.mp3">Track 3 - Happy Birthday 03</option>
+          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb4.mp3">Track 4 - Happy Birthday 04</option>
+          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb5.mp3">Track 5 - Happy Birthday 05 ( upcomming..)</option>
         </select>
 
         <input type="hidden" name="music_selected" id="music_selected" value="">
