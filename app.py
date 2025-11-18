@@ -35,7 +35,7 @@ def health():
 @app.route('/')
 def landing():
     try:
-        return render_template('landing.html')
+        return render_template('index.html')
     except TemplateNotFound:
         # Fallback to a simple HTML page
         return """
