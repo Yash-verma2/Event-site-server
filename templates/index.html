@@ -52,11 +52,17 @@
       <!-- Template Selector -->
       <select id="template_selector" name="template"
         class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
-        <option value="birthday.html" selected>Birthday Template</option>
-        <option value="anniversary.html">Anniversary Template</option>
-        <option value="congratulations.html">Congratulations Template</option>
-        <option value="custom.html">Custom Template</option>
+        <option value="birthday.html" data-preview="/static/previews/birthday.png" selected>Birthday Template</option>
+        <option value="anniversary.html" data-preview="/static/previews/anniversary.png">Anniversary Template</option>
+        <option value="congratulations.html" data-preview="/static/previews/congratulations.png">Congratulations Template</option>
+        <option value="custom.html" data-preview="/static/previews/custom.png">Custom Template</option>
       </select>
+
+      <!-- Template Preview -->
+      <div id="templatePreviewContainer" class="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800/50 text-center">
+        <p class="text-gray-700 dark:text-gray-300 mb-2">Template Preview:</p>
+        <img id="templatePreview" src="/static/previews/birthday.png" alt="Template Preview" class="mx-auto max-h-48 rounded-xl shadow-lg transition-all duration-300">
+      </div>
 
       <!-- Name and Title -->
       <div>
@@ -115,11 +121,11 @@
         <select id="music_selector" name="music_option" 
           class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
           <option value="" selected>-- Select a pre-set music track --</option>
-          <option value="{{ url_for('static', filename='music/happy-birthday-138622.mp3') }}">Track 1 - Happy Pop</option>
-          <option value="{{ url_for('static', filename='music/happy-birthday-254480.mp3') }}">Track 2 - Gentle Waltz</option>
-          <option value="{{ url_for('static', filename='music/music3.mp3') }}">Track 3 - Electronic Beat</option>
-          <option value="{{ url_for('static', filename='music/music4.mp3') }}">Track 4 - Classic Ballad</option>
-          <option value="{{ url_for('static', filename='music/music5.mp3') }}">Track 5 - Upbeat Ukulele</option>
+          <option value="/static/music/happy-birthday-138622.mp3">Track 1 - Happy Pop</option>
+          <option value="/static/music/happy-birthday-254480.mp3">Track 2 - Gentle Waltz</option>
+          <option value="/static/music/music3.mp3">Track 3 - Electronic Beat</option>
+          <option value="/static/music/music4.mp3">Track 4 - Classic Ballad</option>
+          <option value="/static/music/music5.mp3">Track 5 - Upbeat Ukulele</option>
         </select>
 
         <input type="hidden" name="music_selected" id="music_selected" value="">
@@ -180,30 +186,49 @@
   </div>
 
   <script>
+    // Template Preview
+    const templateSelector = document.getElementById('template_selector');
+    const templatePreview = document.getElementById('templatePreview');
+
+    templateSelector.addEventListener('change', () => {
+      const selectedOption = templateSelector.selectedOptions[0];
+      const previewSrc = selectedOption.getAttribute('data-preview');
+      if(previewSrc) {
+        templatePreview.src = previewSrc;
+      }
+    });
+
     // Music Preview with Error Handling
     document.getElementById("music_selector").addEventListener("change", function () {
       const audio = document.getElementById("music_preview");
       const source = document.getElementById("music_preview_source");
       const selected = this.value;
 
+      console.log("Music selector changed to:", selected);
+
       if (selected) {
         source.src = selected;
         audio.classList.remove("hidden");
         
+        // Reset and load
         audio.pause();
         audio.currentTime = 0;
         audio.load();
         
+        // Try to play with error handling
         const playAudio = async () => {
           try {
             await audio.play();
+            console.log("Preview playing successfully");
           } catch (error) {
-            console.log("Preview play failed:", error);
+            console.log("Preview play failed (normal for some browsers):", error);
+            showToast("Click the play button to preview the music", false);
           }
         };
         
         playAudio();
         
+        // Store selection
         document.getElementById("music_selected").value = selected;
         document.getElementById("music_upload").value = "";
       } else {
@@ -219,6 +244,8 @@
       const audio = document.getElementById("music_preview");
       const source = document.getElementById("music_preview_source");
 
+      console.log("Music upload changed:", file ? file.name : "None");
+
       if (file) {
         const url = URL.createObjectURL(file);
         source.src = url;
@@ -231,13 +258,16 @@
         const playAudio = async () => {
           try {
             await audio.play();
+            console.log("Upload preview playing successfully");
           } catch (error) {
             console.log("Upload preview play failed:", error);
+            showToast("Click the play button to preview your uploaded music", false);
           }
         };
         
         playAudio();
 
+        // Clear preset selection
         document.getElementById("music_selector").value = "";
         document.getElementById("music_selected").value = "";
       } else {
@@ -285,13 +315,20 @@
       document.getElementById('gift_image_upload').value = '';
     }
 
-    // Form Submission
+    // Form Submission with Better Error Handling
     document.getElementById('birthdayForm').addEventListener('submit', function(e){
       e.preventDefault();
       const formData = new FormData(this);
+      
+      // Debug: Log form data
+      console.log("=== Form Data ===");
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ": " + value);
+      }
 
       showToast("Generating page...", false);
 
+      // Use relative path for production
       fetch("/generate", {
         method: "POST",
         body: formData,
@@ -363,10 +400,12 @@
           });
         } catch (error) {
           if (error.name !== 'AbortError') {
+            showToast("Could not initiate native share. Copying link instead.", true);
             copyLink();
           }
         }
       } else {
+        showToast("Native share not supported. The link has been copied for manual sharing.", true);
         copyLink();
       }
     }
@@ -381,13 +420,13 @@
             const linkInput = document.getElementById('generatedLink');
             linkInput.select();
             document.execCommand('copy');
-            showToast("Link copied to clipboard!");
+            showToast("Link copied to clipboard (using fallback)!");
           });
         } else {
           const linkInput = document.getElementById('generatedLink');
           linkInput.select();
           document.execCommand('copy');
-          showToast("Link copied to clipboard!");
+          showToast("Link copied to clipboard (using fallback)!");
         }
       } else {
         showToast("Please generate a link first.", true);

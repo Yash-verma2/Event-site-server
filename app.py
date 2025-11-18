@@ -35,29 +35,9 @@ def health():
 @app.route('/')
 def landing():
     try:
-        return render_template('landing.html')
+        return render_template('index.html')
     except TemplateNotFound:
-        # Fallback to a simple HTML page
-        return """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Birthday Page Generator</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <script src="https://cdn.tailwindcss.com"></script>
-        </head>
-        <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-            <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-                <h1 class="text-2xl font-bold text-blue-600 mb-4">🎉 Birthday Page Generator</h1>
-                <p class="text-gray-600 mb-4">Template files are being set up. Please check back soon!</p>
-                <div class="space-y-2">
-                    <a href="/test" class="block text-blue-500 hover:underline">Test Backend</a>
-                    <a href="/health" class="block text-blue-500 hover:underline">Health Check</a>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
+        return 
 
 # ------------------------ GENERATOR ----------------------------
 @app.route('/generate', methods=['POST'])
@@ -149,6 +129,7 @@ def generate():
         except TemplateNotFound:
             # Fallback to simple template
             html = f
+
         with open(os.path.join(base, "index.html"), "w", encoding="utf-8") as f:
             f.write(html)
 
