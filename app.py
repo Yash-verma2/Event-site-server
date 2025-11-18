@@ -8,10 +8,10 @@ ALLOWED_IMAGES = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 ALLOWED_MUSIC = {'mp3', 'wav', 'ogg'}
 MAX_GALLERY = 8
 
-app = Flask(__name__, static_url_path="/static")
+app = Flask(__name__, static_url_path="/static", static_folder="static")
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-app.secret_key = 'change-this-secret'
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB
 
@@ -29,15 +29,6 @@ def landing():
 # ------------------------ GENERATOR ----------------------------
 @app.route('/generate', methods=['POST'])
 def generate():
-    # Add debug prints to see what's coming in the request
-    print("=== FORM DATA ===")
-    for key, value in request.form.items():
-        print(f"{key}: {value}")
-    
-    print("=== FILES ===")
-    for key, value in request.files.items():
-        print(f"{key}: {value.filename if value else 'None'}")
-    
     name = request.form.get('name')
     user_title = request.form.get('title', "").strip()
     messages_raw = request.form.get('messages', "")
@@ -86,29 +77,24 @@ def generate():
         gift_image = "/static/default_gift.png"
 
     # ------------ MUSIC ------------
-    # DEBUG: Check what we're getting for music
     music_selected = request.form.get('music_selected')
-    music_option = request.form.get('music_option')  # Also check the original select field
+    music_option = request.form.get('music_option')
     f = request.files.get("music")
-    
-    print(f"DEBUG - music_selected: {music_selected}")
-    print(f"DEBUG - music_option: {music_option}")
-    print(f"DEBUG - music file: {f.filename if f else 'None'}")
-    
-    if f and allowed(f.filename, ALLOWED_MUSIC):
+
+    if f and f.filename and allowed(f.filename, ALLOWED_MUSIC):
+        # User uploaded a music file
         filename = uid + "_music_" + secure_filename(f.filename)
         f.save(os.path.join(asset_dir, filename))
         music = url_for("assets", uid=uid, filename=filename)
-        print(f"DEBUG - Using uploaded music: {music}")
-    elif music_selected:
-        music = music_selected
-        print(f"DEBUG - Using selected music: {music}")
-    elif music_option:
-        music = music_option
-        print(f"DEBUG - Using music_option: {music}")
+    elif music_selected and music_selected.strip():
+        # User selected a preset music
+        music = music_selected.strip()
+    elif music_option and music_option.strip():
+        # User selected a preset music from dropdown
+        music = music_option.strip()
     else:
+        # Default music
         music = "/static/default_music.mp3"
-        print(f"DEBUG - Using default music: {music}")
 
     # ------------ GALLERY IMAGES ------------
     gallery_images = []
@@ -146,7 +132,9 @@ def generate():
         f.write(gallery_html)
 
     # ------------ FINAL LINK ------------
-    link = f"http://{request.host}/generated/{uid}/"
+    # Use environment variable for host or fallback to request host
+    base_url = os.environ.get('RENDER_EXTERNAL_URL', f"http://{request.host}")
+    link = f"{base_url}/generated/{uid}/"
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return {"link": link}
@@ -171,4 +159,5 @@ def assets(uid, filename):
 
 # ----------------------------- RUN SERVER -----------------------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(host="0.0.0.0", port=port, debug=False)
