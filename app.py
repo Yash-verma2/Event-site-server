@@ -24,6 +24,7 @@ app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
+
 def allowed(filename, types):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in types
 
@@ -103,7 +104,7 @@ def generate():
 
         # -------------------- Gallery Images (FIXED) --------------------
         gallery_images = []
-        gallery_files = request.files.getlist("gallery[]")  # IMPORTANT FIX
+        gallery_files = request.files.getlist("gallery[]")  # Correct field name
 
         for g in gallery_files[:MAX_GALLERY]:
             if g and allowed(g.filename, ALLOWED_IMAGES):
@@ -112,7 +113,7 @@ def generate():
                 g.save(path)
                 gallery_images.append(url_for("assets", uid=uid, filename=file, _external=True))
 
-        print("Gallery Received:", gallery_images)  # Debug
+        print("Gallery Received:", gallery_images)
 
         # -------------------- Render Main Template --------------------
         try:
@@ -133,7 +134,7 @@ def generate():
         with open(os.path.join(base, "index.html"), "w", encoding="utf-8") as f:
             f.write(html)
 
-        # -------------------- Render Gallery Page Always (FIXED) --------------------
+        # -------------------- Render Gallery Page --------------------
         gallery_html = f"""
         <!DOCTYPE html>
         <html>
@@ -165,12 +166,16 @@ def generate():
         with open(os.path.join(base, "gallery.html"), "w", encoding="utf-8") as f:
             f.write(gallery_html)
 
-        # -------------------- Final Link --------------------
+        # -------------------- Final Link (NOW JSON) --------------------
         link = request.host_url.rstrip('/') + f"/generated/{uid}/"
-        return redirect(link)
+
+        return jsonify({
+            "status": "success",
+            "url": link
+        })
 
     except Exception as e:
-        return f"Error: {e}", 500
+        return jsonify({"error": str(e)}), 500
 
 
 # ------------------------ Routes ------------------------
