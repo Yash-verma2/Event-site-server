@@ -242,10 +242,17 @@ def gallery_page(uid):
     path = os.path.join(app.config['UPLOAD_FOLDER'], uid)
     return send_from_directory(path, "gallery.html")
 
+# Fix: handle trailing slash
+@app.route('/generated/<uid>/gallery/')
+def gallery_page_slash(uid):
+    path = os.path.join(app.config['UPLOAD_FOLDER'], uid)
+    return send_from_directory(path, "gallery.html")
+
 @app.route('/generated/<uid>/assets/<filename>')
 def assets(uid, filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], uid, "assets")
     return send_from_directory(path, filename)
+
 
 # ----------------------------- RUN SERVER -----------------------------
 if __name__ == "__main__":
