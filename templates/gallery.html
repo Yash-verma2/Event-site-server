@@ -160,13 +160,17 @@ function createConfetti() {
 }
 setInterval(createConfetti, 200);
 
-document.body.addEventListener('click', () => {
+window.addEventListener('touchstart', playMusic, { once: true });
+window.addEventListener('click', playMusic, { once: true });
+
+function playMusic() {
   const music = document.getElementById('bgMusic');
   if (music.paused) {
     music.volume = 0.5;
-    music.play();
+    music.play().catch(()=>{});
   }
-});
+}
+
 </script>
 
 </body>
