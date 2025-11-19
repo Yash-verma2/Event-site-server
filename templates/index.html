@@ -404,6 +404,14 @@ About
 
   </div>
 </footer>
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex flex-col justify-center items-center z-[9999] hidden">
+  <div class="w-64 bg-gray-200 dark:bg-gray-800 rounded-full h-4 overflow-hidden mb-4">
+    <div id="loadingBar" class="bg-sky-600 h-4 w-0 transition-all duration-300"></div>
+  </div>
+  <p class="text-white font-semibold">Generating your page... Please wait!</p>
+</div>
+
 
 
   </div>
@@ -548,44 +556,55 @@ function closeHowToUse() {
       document.getElementById('gift_image_upload').value = '';
     }
 
-    // Form Submission with Better Error Handling
-    document.getElementById('birthdayForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const formData = new FormData(this);
-      
-      // Debug: Log form data
-      console.log("=== Form Data ===");
-      for (let [key, value] of formData.entries()) {
-        console.log(key + ": " + value);
-      }
+   document.getElementById('birthdayForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const formData = new FormData(this);
 
-      showToast("Generating page...", false);
+  // Show loading overlay
+  const overlay = document.getElementById('loadingOverlay');
+  const bar = document.getElementById('loadingBar');
+  overlay.classList.remove('hidden');
+  bar.style.width = '0%';
 
-      // Use relative path for production
-      fetch("/generate", {
-        method: "POST",
-        body: formData,
-        headers: {'X-Requested-With': 'XMLHttpRequest'}
-      })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`Server responded with ${res.status}`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        if (data.error) {
-          throw new Error(data.error);
-        }
-        document.getElementById('generatedLink').value = data.link;
-        document.getElementById('generatedLinkContainer').style.display = "block";
-        showToast("Page generated successfully!", false);
-      })
-      .catch(err => {
-        console.error('Fetch error:', err);
-        showToast("Error generating page: " + err.message, true);
-      });
-    });
+  // Simulate progress bar animation
+  let progress = 0;
+  const interval = setInterval(() => {
+    if(progress < 90) { // Max 90% until server responds
+      progress += Math.random() * 5; 
+      bar.style.width = progress + '%';
+    }
+  }, 200);
+
+  fetch("/generate", {
+    method: "POST",
+    body: formData,
+    headers: {'X-Requested-With': 'XMLHttpRequest'}
+  })
+  .then(res => {
+    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+    return res.json();
+  })
+  .then(data => {
+    if(data.error) throw new Error(data.error);
+
+    clearInterval(interval);
+    bar.style.width = '100%';
+
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+    }, 500);
+
+    document.getElementById('generatedLink').value = data.link;
+    document.getElementById('generatedLinkContainer').style.display = "block";
+    showToast("Page generated successfully!", false);
+  })
+  .catch(err => {
+    clearInterval(interval);
+    overlay.classList.add('hidden');
+    console.error('Fetch error:', err);
+    showToast("Error generating page: " + err.message, true);
+  });
+});
 
     // Utility Functions
     function visitPage() {
