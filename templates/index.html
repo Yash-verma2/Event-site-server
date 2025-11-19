@@ -40,6 +40,94 @@
 
 <body class="bg-gradient-to-br from-gray-100 to-white dark:from-gray-900 dark:to-[#070c13] min-h-screen flex justify-center items-center p-4 sm:p-8 font-sans transition-colors duration-500">
 
+  <!-- HEADER (Premium + Animated + Responsive) -->
+<header class="w-full fixed top-0 left-0 z-50 bg-white/60 dark:bg-gray-900/50 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/40 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition duration-300">
+<div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+
+
+<!-- Logo + Premium Glow -->
+<div class="flex items-center space-x-3">
+  <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-sky-500 via-indigo-500 to-purple-600 
+              shadow-lg shadow-indigo-500/40 flex items-center justify-center">
+    <span class="text-white font-bold text-lg">W</span>
+  </div>
+
+  <h1 class="text-2xl font-extrabold bg-gradient-to-r from-sky-600 to-indigo-500 
+             bg-clip-text text-transparent tracking-wide">
+    WishCraft
+  </h1>
+</div>
+
+
+
+<!-- Desktop Nav -->
+<nav class="hidden sm:flex items-center space-x-6 text-gray-700 dark:text-gray-300 text-sm font-medium">
+<a href="#" class="relative group">
+Home
+<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></span>
+</a>
+<a href="javascript:void(0)" onclick="openHowToUse()" class="relative group">
+  How To Use
+<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></span>
+</a>
+<a href="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/about.html" class="relative group">
+About
+<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></span>
+</a>
+</nav>
+
+
+<!-- Mobile Menu Button -->
+<button class="sm:hidden text-3xl text-gray-700 dark:text-gray-300 active:scale-90 transition" onclick="document.getElementById('mobileNav').classList.toggle('hidden')">
+☰
+</button>
+</div>
+
+
+<!-- Mobile Nav -->
+<div id="mobileNav" class="hidden sm:hidden px-4 pb-4 space-y-2 text-gray-700 dark:text-gray-300 text-base animate-fadeIn">
+<a href="#" class="block py-2 border-b border-gray-200 dark:border-gray-700">Home</a>
+<a href="javascript:void(0)" onclick="openHowToUse()" class="relative group">How To Use</a>
+<a href="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/about.html" class="block py-2">About</a>
+</div>
+</header>
+
+<!-- HOW TO USE POPUP -->
+<div id="howToUsePopup" 
+     class="fixed inset-0 bg-black/60 backdrop-blur-md z-[999] hidden flex justify-center items-center p-4">
+  
+  <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-2xl w-full shadow-2xl animate-fadeIn relative">
+
+    <!-- Close Button -->
+    <button onclick="closeHowToUse()" 
+            class="absolute top-3 right-3 text-gray-600 dark:text-gray-300 text-2xl hover:text-red-500">
+      ✖
+    </button>
+
+    <h2 class="text-2xl font-bold mb-4 text-sky-600 dark:text-sky-400 text-center">
+      How to Use WishCraft
+    </h2>
+
+    <video class="w-full rounded-xl shadow-lg" controls>
+      <source src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/howtouse.mp4" type="video/mp4">
+    </video>
+
+  </div>
+</div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<div class="pt-32 sm:pt-28 flex justify-center items-start p-4 sm:p-8 w-full">
+
   <!-- Message/Toast Container -->
   <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
@@ -164,28 +252,173 @@
     </div>
 
     <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Share your page link easily:</p>
-      <div class="share-buttons flex justify-center space-x-4 flex-wrap gap-3">
-        <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-sky-700 hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 shadow-md" onclick="copyLink()">
-          Copy Link
-        </button>
-        <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-[#25D366] hover:bg-[#128C7E]" onclick="shareWhatsApp()">
-          WhatsApp
-        </button>
-        <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-[#4267B2] hover:bg-[#365899]" onclick="shareFacebook()">
-          Facebook
-        </button>
-        <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-[#1DA1F2] hover:bg-[#0c85d0]" onclick="shareTwitter()">
-          X / Twitter
-        </button>
-        <button class="px-5 py-3 rounded-xl text-white font-medium transition duration-200 bg-violet-600 hover:bg-violet-700" onclick="sharePage()">
-          Share (Instagram, etc.)
-        </button>
-      </div>
+  <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+    Share your page link easily:
+  </p>
+
+  <div class="share-buttons flex flex-wrap justify-center gap-3 w-full">
+
+    <button 
+      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
+             bg-sky-700 hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 shadow-md"
+      onclick="copyLink()">
+      Copy Link
+    </button>
+
+    <button 
+      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
+             bg-[#25D366] hover:bg-[#128C7E]"
+      onclick="shareWhatsApp()">
+      WhatsApp
+    </button>
+
+    <button 
+      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
+             bg-[#4267B2] hover:bg-[#365899]"
+      onclick="shareFacebook()">
+      Facebook
+    </button>
+
+    <button 
+      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
+             bg-[#1DA1F2] hover:bg-[#0c85d0]"
+      onclick="shareTwitter()">
+      X / Twitter
+    </button>
+
+    <button 
+      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
+             bg-violet-600 hover:bg-violet-700"
+      onclick="sharePage()">
+      Share (Instagram, etc.)
+    </button>
+
+  </div>
+</div>
+<div class="mt-12 pt-10 border-t border-gray-200 dark:border-gray-700">
+
+  <div class="mt-12 pt-10 border-t border-gray-200 dark:border-gray-700">
+
+  <!-- Premium Heading -->
+  <p class="text-center text-base font-semibold text-gray-700 dark:text-gray-200 mb-6">
+    Share your page link
+  </p>
+
+  <!-- Premium Card -->
+  <div class="max-w-3xl mx-auto p-6 rounded-2xl 
+              bg-white/70 dark:bg-white/10 backdrop-blur-xl 
+              shadow-lg border border-white/40 dark:border-white/20 
+              flex flex-wrap justify-center gap-4">
+
+    <!-- Copy Link -->
+    <button
+      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
+             bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400
+             transition-all duration-300 shadow-md hover:shadow-xl
+             hover:-translate-y-1 active:scale-95"
+      onclick="copyLink()">
+      Copy Link
+    </button>
+
+    <!-- WhatsApp -->
+    <button
+      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
+             bg-[#25D366] hover:bg-[#128C7E]
+             transition-all duration-300 shadow-md hover:shadow-xl
+             hover:-translate-y-1 active:scale-95"
+      onclick="shareWhatsApp()">
+      WhatsApp
+    </button>
+
+    <!-- Facebook -->
+    <button
+      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
+             bg-[#4267B2] hover:bg-[#365899]
+             transition-all duration-300 shadow-md hover:shadow-xl
+             hover:-translate-y-1 active:scale-95"
+      onclick="shareFacebook()">
+      Facebook
+    </button>
+
+    <!-- Twitter X -->
+    <button
+      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
+             bg-[#1DA1F2] hover:bg-[#0c85d0]
+             transition-all duration-300 shadow-md hover:shadow-xl
+             hover:-translate-y-1 active:scale-95"
+      onclick="shareTwitter()">
+      X / Twitter
+    </button>
+
+    <!-- Generic Share -->
+    <button
+      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
+             bg-violet-600 hover:bg-violet-700
+             transition-all duration-300 shadow-md hover:shadow-xl
+             hover:-translate-y-1 active:scale-95"
+      onclick="sharePage()">
+      Share Anywhere
+    </button>
+
+  </div>
+</div>
+
+
+
+   <!-- FOOTER (Glassmorphism + Personal Touch) -->
+<footer class="mt-20 w-full bg-white/10 dark:bg-black/10 backdrop-blur-xl border-t border-gray-300/30 dark:border-gray-700/30 py-8">
+  <div class="max-w-6xl mx-auto text-center px-4 space-y-2">
+
+    <!-- Brand Name -->
+    <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200">
+      WishCraft
+    </h2>
+
+    <!-- Tagline -->
+    <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+      Crafting magical celebration pages ✨
+    </p>
+
+    <!-- Your Name -->
+    <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mt-1">
+      Developed by Yash Verma
+    </p>
+
+    <!-- Copyright -->
+    <p class="text-gray-400 dark:text-gray-500 text-xs mt-2">
+      © 2025 WishCraft • Made with ❤️
+    </p>
+
+    <!-- Social Links (Optional) -->
+    <div class="flex justify-center items-center gap-4 mt-3">
+      <a href="https://github.com/Yash-verma2" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-sky-500 transition">
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/yash-verma-123/" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-sky-500 transition">
+        LinkedIn
+      </a>
+      <a href="https://twitter.com/YashVerma" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-sky-500 transition">
+        Twitter
+      </a>
     </div>
+
+  </div>
+</footer>
+
+
   </div>
 
   <script>
+    function openHowToUse() {
+  document.getElementById("howToUsePopup").classList.remove("hidden");
+}
+
+function closeHowToUse() {
+  document.getElementById("howToUsePopup").classList.add("hidden");
+}
+
+
+
     // Template Preview
     const templateSelector = document.getElementById('template_selector');
     const templatePreview = document.getElementById('templatePreview');
