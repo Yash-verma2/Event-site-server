@@ -1,44 +1,75 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Birthday Page Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Load Tailwind CSS -->
+  <meta charset="utf-8" />
+
+  <!-- Mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- Title -->
+  <title>Birthday Page Generator | Create Beautiful Digital Birthday Pages Instantly</title>
+
+  <!-- Primary SEO -->
+  <meta name="description" content="Create stunning, aesthetic, Gen-Z style digital birthday pages instantly. Free, fast, responsive birthday page generator with music, photos and animations." />
+  <meta name="keywords" content="birthday generator, birthday page, digital birthday card, birthday template, birthday wish maker, aesthetic birthday page" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://toolnest-yash.vercel.app/birthday" />
+
+  <!-- Open Graph (Facebook, Instagram, WhatsApp Preview) -->
+  <meta property="og:title" content="🎉 Create a Stunning Digital Birthday Page" />
+  <meta property="og:description" content="Make a trending Gen-Z style birthday page with images, music & animations." />
+  <meta property="og:image" content="https://toolnest-yash.vercel.app/og-image.png" />
+  <meta property="og:url" content="https://toolnest-yash.vercel.app/birthday" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Create a Stunning Digital Birthday Page 🎉" />
+  <meta name="twitter:description" content="Gen-Z aesthetic birthday page generator — free & fast." />
+  <meta name="twitter:image" content="https://toolnest-yash.vercel.app/og-image.png" />
+
+  <!-- Schema.org Rich Snippet -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Birthday Page Generator",
+    "url": "https://toolnest-yash.vercel.app/birthday",
+    "description": "Create aesthetic and trending birthday pages online for free.",
+    "applicationCategory": "Utility",
+    "operatingSystem": "All"
+  }
+  </script>
+
+  <!-- PWA Support -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" href="/icon-512.png" />
+
+  <!-- Fonts + Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Configure Tailwind to use Inter font -->
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { sans: ['Inter','Poppins','sans-serif'] }
         },
       }
     }
   </script>
-  <!-- Custom CSS for a smooth scrollbar on the gift selector, updated color -->
+
+  <!-- Custom Scrollbar -->
   <style>
-    .gift-options::-webkit-scrollbar {
-      height: 8px;
-    }
-    .gift-options::-webkit-scrollbar-thumb {
-      background-color: #0369a160;
-      border-radius: 4px;
-    }
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
+    .gift-options::-webkit-scrollbar { height: 8px; }
+    .gift-options::-webkit-scrollbar-thumb { background-color: #0369a160; border-radius: 4px; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-100 to-white dark:from-gray-900 dark:to-[#070c13] min-h-screen flex justify-center items-center p-4 sm:p-8 font-sans transition-colors duration-500">
+
+<body class="bg-gradient-to-br from-gray-100 to-white min-h-screen flex justify-center items-center p-4 sm:p-8 font-sans transition-colors duration-500">
 
   <!-- HEADER (Premium + Animated + Responsive) -->
 <header class="w-full fixed top-0 left-0 z-50 bg-white/60 dark:bg-gray-900/50 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/40 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition duration-300">
@@ -141,9 +172,9 @@ About
       <select id="template_selector" name="template"
         class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
         <option value="birthday.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png" selected>Birthday Template</option>
+        <option value="birthday2.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd2-preview.png">Birthday Template 2</option>
         <option value="anniversary.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/anversary-preview.png">Anniversary Template</option>
-        <option value="congratulations.html" data-preview="/static/previews/congratulations.png">Congratulations Template</option>
-        <option value="custom.html" data-preview="/static/previews/custom.png">Custom Template</option>
+        <option value="custom.html" data-preview="/static/previews/custom.png">More Templates Soon...</option>
       </select>
 
       <!-- Template Preview -->
@@ -183,7 +214,7 @@ About
       <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gift Image (Choose or Upload)</label>
         <div class="gift-options flex space-x-4 pb-3 mb-4 overflow-x-scroll scrollbar-hide">
-          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png" alt="Gift Option 1" onclick="selectGift(this)" data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png"
+          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png" alt="Gift Option 1" onclick="selectGift(this)" data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
           <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png" alt="Gift Option 2" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png"
                class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
@@ -295,75 +326,12 @@ About
 
   </div>
 </div>
+
+<!-- line -->
+
 <div class="mt-12 pt-10 border-t border-gray-200 dark:border-gray-700">
 
-  <div class="mt-12 pt-10 border-t border-gray-200 dark:border-gray-700">
-
-  <!-- Premium Heading -->
-  <p class="text-center text-base font-semibold text-gray-700 dark:text-gray-200 mb-6">
-    Share your page link
-  </p>
-
-  <!-- Premium Card -->
-  <div class="max-w-3xl mx-auto p-6 rounded-2xl 
-              bg-white/70 dark:bg-white/10 backdrop-blur-xl 
-              shadow-lg border border-white/40 dark:border-white/20 
-              flex flex-wrap justify-center gap-4">
-
-    <!-- Copy Link -->
-    <button
-      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
-             bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400
-             transition-all duration-300 shadow-md hover:shadow-xl
-             hover:-translate-y-1 active:scale-95"
-      onclick="copyLink()">
-      Copy Link
-    </button>
-
-    <!-- WhatsApp -->
-    <button
-      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
-             bg-[#25D366] hover:bg-[#128C7E]
-             transition-all duration-300 shadow-md hover:shadow-xl
-             hover:-translate-y-1 active:scale-95"
-      onclick="shareWhatsApp()">
-      WhatsApp
-    </button>
-
-    <!-- Facebook -->
-    <button
-      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
-             bg-[#4267B2] hover:bg-[#365899]
-             transition-all duration-300 shadow-md hover:shadow-xl
-             hover:-translate-y-1 active:scale-95"
-      onclick="shareFacebook()">
-      Facebook
-    </button>
-
-    <!-- Twitter X -->
-    <button
-      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
-             bg-[#1DA1F2] hover:bg-[#0c85d0]
-             transition-all duration-300 shadow-md hover:shadow-xl
-             hover:-translate-y-1 active:scale-95"
-      onclick="shareTwitter()">
-      X / Twitter
-    </button>
-
-    <!-- Generic Share -->
-    <button
-      class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-medium
-             bg-violet-600 hover:bg-violet-700
-             transition-all duration-300 shadow-md hover:shadow-xl
-             hover:-translate-y-1 active:scale-95"
-      onclick="sharePage()">
-      Share Anywhere
-    </button>
-
-  </div>
-</div>
-
-
+  
 
    <!-- FOOTER (Glassmorphism + Personal Touch) -->
 <footer class="mt-20 w-full bg-white/10 dark:bg-black/10 backdrop-blur-xl border-t border-gray-300/30 dark:border-gray-700/30 py-8">

@@ -136,7 +136,7 @@ def generate():
             title_map = {
                 'birthday.html': "🎉 Happy Birthday",
                 'anniversary.html': "💖 Happy Anniversary",
-                'congratulations.html': "🎊 Congratulations"
+                'birthday2.html': "🎊 Happy Birthday"
             }
             title = title_map.get(template, "🎉 Celebration")
         else:

@@ -8,24 +8,155 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { width:100%; height:100%; font-family:'Baloo 2', cursive; background: linear-gradient(to bottom right,#ffd6e7,#ffe8f0); color:#444; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow-x:hidden; overflow-y:auto; text-align:center; padding:20px; }
-    #gift { width:60vw; max-width:300px; height:60vw; max-height:300px; background:url('{{ gift_image }}') no-repeat center/contain; cursor:pointer; animation:float 2s ease-in-out infinite alternate; transition:transform 0.5s; margin-bottom:20px; }
-    @keyframes float { 0%{transform:translateY(0)} 100%{transform:translateY(-15px)} }
-    .tap-to-open { font-size:1.5rem;color:#ff4081;margin-top:10px;animation:blink 1.5s infinite;font-weight:bold; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
-    #celebration { display:none; flex-direction:column; align-items:center; justify-content:center; margin-top:20px; }
-    .gif-container { width:90vw; max-width:400px; height:90vw; max-height:400px; background:url('{{ main_image }}') no-repeat center/cover; border-radius:20px; margin-bottom:20px; box-shadow:0 0 20px rgba(255,182,193,0.8); }
-    h1 { font-size:2.3rem; color:#ff66b2; margin-bottom:20px; text-shadow:2px 2px 8px rgba(255,105,180,0.8); }
-    .card { background:#fff0f5; border-radius:20px; padding:20px; box-shadow:0 6px 20px rgba(0,0,0,0.1); width:90%; max-width:450px; animation:fadeIn 2s ease forwards; margin-bottom:20px; }
-    #typed { font-size:1.5rem; min-height:100px; }
-    .tap-text { font-size:1.2rem; margin-top:10px; color:#666; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-    .balloon { position:absolute; width:40px; height:60px; background:radial-gradient(circle,#ff8ac6 0%,#ff2e63 100%); border-radius:50%; opacity:0.8; animation:rise 8s infinite ease-in; }
-    @keyframes rise { 0%{bottom:-100px;transform:translateX(0)} 100%{bottom:110vh;transform:translateX(50px)} }
-    @media(max-width:500px){ .tap-to-open{font-size:1.3rem} h1{font-size:2rem} #typed{font-size:1.3rem} .tap-text{font-size:1.1rem} }
-  </style>
+<style>
+/* GLOBAL RESET */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+/* HIDE SCROLLBAR */
+body::-webkit-scrollbar { display: none; }
+body { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* MAIN LAYOUT */
+html, body {
+  width:100%;
+  height:100%;
+  font-family:'Baloo 2', cursive;
+  background: linear-gradient(to bottom right,#ffd6e7,#ffe8f0);
+  color:#444;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow-x:hidden;
+  overflow-y:visible !important;   /* IMPORTANT FIX */
+  text-align:center;
+  padding:20px;
+  position:relative;               /* IMPORTANT FIX */
+  z-index:0;
+}
+
+
+
+/* GIFT BOX */
+#gift {
+  width:60vw;
+  max-width:300px;
+  height:60vw;
+  max-height:300px;
+  background:url('{{ gift_image }}') no-repeat center/contain;
+  cursor:pointer;
+  animation:float 2s ease-in-out infinite alternate;
+  transition:transform 0.5s;
+  margin-bottom:20px;
+}
+@keyframes float {
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-15px)}
+}
+
+.tap-to-open {
+  font-size:1.5rem;
+  color:#ff4081;
+  margin-top:10px;
+  animation:blink 1.5s infinite;
+  font-weight:bold;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* HIDDEN CELEBRATION SECTION */
+#celebration {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.gif-container {
+  width:90vw;
+  max-width:400px;
+  height:90vw;
+  max-height:400px;
+  background:url('{{ main_image }}') no-repeat center/cover;
+  border-radius:20px;
+  margin-bottom:20px;
+  box-shadow:0 0 20px rgba(255,182,193,0.8);
+}
+
+h1 {
+  font-size:2.3rem;
+  color:#ff66b2;
+  margin-bottom:20px;
+  text-shadow:2px 2px 8px rgba(255,105,180,0.8);
+}
+
+.card {
+  background:#fff0f5;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.1);
+  width:90%;
+  max-width:450px;
+  animation:fadeIn 2s ease forwards;
+  margin-bottom:20px;
+}
+#typed { font-size:1.5rem; min-height:100px; }
+.tap-text { font-size:1.2rem; margin-top:10px; color:#666; }
+
+@keyframes fadeIn {
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* BALLOONS — FINAL FIX */
+.balloon {
+  position: fixed;
+  bottom: -150px;
+  pointer-events: none;
+  z-index: 999999;
+  border-radius: 50% 50% 45% 45%;
+  opacity: 0.95;
+  animation: rise var(--speed) linear forwards, sway 3s ease-in-out infinite;
+  box-shadow: inset -6px -8px 14px rgba(255,255,255,0.2),
+              0 10px 20px rgba(0,0,0,0.1);
+}
+
+.balloon::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  width: 30%;
+  height: 35%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+}
+
+.balloon::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 55px;
+  transform: translateX(-50%);
+  background: #ccc;
+}
+
+@keyframes rise {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-130vh); opacity: 1; }
+}
+
+@keyframes sway {
+  0% { transform: translateX(0) rotate(-3deg); }
+  50% { transform: translateX(25px) rotate(3deg); }
+  100% { transform: translateX(0) rotate(-3deg); }
+}
+
+</style>
+
 </head>
 
 <body>
@@ -55,37 +186,57 @@ function startTyping() {
 }
 
 function playMusic() {
-  const music = document.getElementById('birthdayMusic');
-  music.volume = 0.5;
-  music.play().catch(() => console.log("Autoplay blocked, tap to play"));
+  birthdayMusic.volume = 0.5;
+  birthdayMusic.play().catch(()=>{});
 }
 
 function launchConfetti() {
-  const duration=4000, end=Date.now()+duration;
-  (function frame(){ confetti({ particleCount:5, angle:60, spread:55, origin:{x:0} });
-  confetti({ particleCount:5, angle:120, spread:55, origin:{x:1} });
-  if(Date.now()<end) requestAnimationFrame(frame); })();
+  const duration=4500;
+  const end=Date.now()+duration;
+  (function frame(){
+    confetti({ particleCount:5, angle:60, spread:55, origin:{x:0} });
+    confetti({ particleCount:5, angle:120, spread:55, origin:{x:1} });
+    if(Date.now()<end) requestAnimationFrame(frame);
+  })();
 }
 
+/* ------------------ BALLOON GENERATOR ------------------ */
 function createBalloons() {
-  for(let i=0;i<20;i++){
-    const balloon=document.createElement('div');
-    balloon.className='balloon';
-    balloon.style.left=Math.random()*100+'vw';
-    balloon.style.animationDuration=(5+Math.random()*5)+'s';
-    document.body.appendChild(balloon);
-    setTimeout(()=>balloon.remove(),10000);
+  for(let i=0;i<18;i++){
+    const b=document.createElement("div");
+    b.className="balloon";
+
+    const size = 40 + Math.random()*60;
+    b.style.width = size + "px";
+    b.style.height = size*1.25 + "px";
+    b.style.left = Math.random()*95 + "vw";
+
+    const c1 = `rgb(${200+Math.random()*55}, ${80+Math.random()*120}, ${140+Math.random()*120})`;
+    const c2 = `rgb(${120+Math.random()*135}, ${120+Math.random()*80}, ${120+Math.random()*80})`;
+
+    b.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
+
+    b.style.setProperty("--speed", (6 + Math.random()*5) + "s");
+
+    document.body.appendChild(b);
+
+    setTimeout(()=> b.remove(), 9000);
   }
 }
 
-function startConfetti(){ launchConfetti(); createBalloons(); }
+function startConfetti(){
+  launchConfetti();
+  createBalloons();
+}
 
+/* ------------------ OPEN GIFT ------------------ */
 function openGift() {
   if(opened) return;
-  opened=true;
+  opened = true;
 
   const gift = document.getElementById('gift');
   const tapText = document.querySelector('.tap-to-open');
+
   gift.style.animation='none';
   gift.style.transform='scale(1.1) rotate(10deg)';
 
@@ -94,27 +245,16 @@ function openGift() {
     tapText.style.display='none';
     setTimeout(()=>{
       gift.style.display='none';
-      const celebration=document.getElementById('celebration');
       celebration.style.display='flex';
       startTyping();
       playMusic();
       startConfetti();
-
-      // Click anywhere on celebration to open gallery
-      celebration.onclick = () => { 
-        if(galleryLink && galleryLink!=="") window.location.href = galleryLink;
-        else alert("Gallery not found!");
+      celebration.onclick = () => {
+        if(galleryLink) window.location.href = galleryLink;
       };
-
     },400);
   },400);
 }
-
-// Play music on body click if blocked
-document.body.addEventListener('click', () => {
-  const music = document.getElementById('birthdayMusic');
-  if(music.paused){ music.volume=0.5; music.play().catch(()=>{}); }
-});
 </script>
 
 </body>
