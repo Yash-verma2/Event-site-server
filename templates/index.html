@@ -1,399 +1,582 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
-
-  <!-- Mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f1f5f9" />
 
   <!-- Title -->
-  <title>Birthday Page Generator | Create Beautiful Digital Birthday Pages Instantly</title>
+  <title>WishCraft | Create Magical Birthday Pages</title>
 
-  <!-- Primary SEO -->
-  <meta name="description" content="Create stunning, aesthetic, Gen-Z style digital birthday pages instantly. Free, fast, responsive birthday page generator with music, photos and animations." />
-  <meta name="keywords" content="birthday generator, birthday page, digital birthday card, birthday template, birthday wish maker, aesthetic birthday page" />
+  <!-- SEO -->
+  <meta name="description"
+    content="Create stunning, aesthetic, Gen-Z style digital birthday pages instantly. Free, fast, responsive birthday page generator with music, photos and animations." />
+  <meta name="keywords"
+    content="birthday generator, birthday page, digital birthday card, birthday template, birthday wish maker, aesthetic birthday page" />
 
   <!-- Canonical -->
   <link rel="canonical" href="https://toolnest-yash.vercel.app/birthday" />
 
-  <!-- Open Graph (Facebook, Instagram, WhatsApp Preview) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="🎉 Create a Stunning Digital Birthday Page" />
-  <meta property="og:description" content="Make a trending Gen-Z style birthday page with images, music & animations." />
+  <meta property="og:description"
+    content="Make a trending Gen-Z style birthday page with images, music & animations." />
   <meta property="og:image" content="https://toolnest-yash.vercel.app/og-image.png" />
   <meta property="og:url" content="https://toolnest-yash.vercel.app/birthday" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Create a Stunning Digital Birthday Page 🎉" />
-  <meta name="twitter:description" content="Gen-Z aesthetic birthday page generator — free & fast." />
-  <meta name="twitter:image" content="https://toolnest-yash.vercel.app/og-image.png" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-  <!-- Schema.org Rich Snippet -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Birthday Page Generator",
-    "url": "https://toolnest-yash.vercel.app/birthday",
-    "description": "Create aesthetic and trending birthday pages online for free.",
-    "applicationCategory": "Utility",
-    "operatingSystem": "All"
-  }
-  </script>
-
-  <!-- PWA Support -->
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="icon" type="image/png" href="/icon-512.png" />
-
-  <!-- Fonts + Tailwind -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter','Poppins','sans-serif'] }
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            sky: { 500: '#0ea5e9', 600: '#0284c7' },
+            indigo: { 500: '#6366f1', 600: '#4f46e5' },
+          }
         },
       }
     }
   </script>
 
-  <!-- Custom Scrollbar -->
+  <!-- Custom Styles -->
   <style>
-    .gift-options::-webkit-scrollbar { height: 8px; }
-    .gift-options::-webkit-scrollbar-thumb { background-color: #0369a160; border-radius: 4px; }
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .dark .glass {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Blob Animation */
+    @keyframes blob {
+      0% {
+        transform: translate(0px, 0px) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -50px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+
+      100% {
+        transform: translate(0px, 0px) scale(1);
+      }
+    }
+
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    .gift-options::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .gift-options::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
   </style>
 </head>
 
+<body class="bg-slate-50 min-h-screen relative overflow-x-hidden text-slate-900">
 
-<body class="bg-gradient-to-br from-gray-100 to-white min-h-screen flex justify-center items-center p-4 sm:p-8 font-sans transition-colors duration-500">
-
-  <!-- HEADER (Premium + Animated + Responsive) -->
-<header class="w-full fixed top-0 left-0 z-50 bg-white/60 dark:bg-gray-900/50 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/40 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition duration-300">
-<div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
-
-
-<!-- Logo + Premium Glow -->
-<div class="flex items-center space-x-3">
-  <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-sky-500 via-indigo-500 to-purple-600 
-              shadow-lg shadow-indigo-500/40 flex items-center justify-center">
-    <span class="text-white font-bold text-lg">W</span>
+  <!-- Background Blobs -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-0 left-1/4 w-96 h-96 bg-sky-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob">
+    </div>
+    <div
+      class="absolute top-0 right-1/4 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000">
+    </div>
+    <div
+      class="absolute -bottom-32 left-1/3 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000">
+    </div>
   </div>
 
-  <h1 class="text-2xl font-extrabold bg-gradient-to-r from-sky-600 to-indigo-500 
-             bg-clip-text text-transparent tracking-wide">
-    WishCraft
-  </h1>
-</div>
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 glass w-full transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
+            <span class="text-white font-bold text-xl">W</span>
+          </div>
+          <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-indigo-600">
+            WishCraft
+          </span>
+        </div>
 
+        <!-- Nav -->
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="#" class="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors">Home</a>
+          <a href="javascript:void(0)" onclick="openHowToUse()"
+            class="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors">How To Use</a>
+          <a href="about.html" class="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors">About</a>
+        </nav>
 
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden p-2 text-slate-600"
+          onclick="document.getElementById('mobileNav').classList.toggle('hidden')">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-<!-- Desktop Nav -->
-<nav class="hidden sm:flex items-center space-x-6 text-gray-700 dark:text-gray-300 text-sm font-medium">
-<a href="#" class="relative group">
-Home
-<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></span>
-</a>
-<a href="javascript:void(0)" onclick="openHowToUse()" class="relative group">
-  How To Use
-<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></span>
-</a>
-<a href="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/about.html" class="relative group">
-About
-<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></span>
-</a>
-</nav>
+    <!-- Mobile Nav -->
+    <div id="mobileNav" class="hidden md:hidden border-t border-slate-200 bg-white/90 backdrop-blur-md">
+      <div class="px-4 py-4 space-y-3">
+        <a href="#" class="block text-sm font-medium text-slate-600 hover:text-sky-600">Home</a>
+        <a href="javascript:void(0)" onclick="openHowToUse()"
+          class="block text-sm font-medium text-slate-600 hover:text-sky-600">How To Use</a>
+        <a href="about.html" class="block text-sm font-medium text-slate-600 hover:text-sky-600">About</a>
+      </div>
+    </div>
+  </header>
 
-
-<!-- Mobile Menu Button -->
-<button class="sm:hidden text-3xl text-gray-700 dark:text-gray-300 active:scale-90 transition" onclick="document.getElementById('mobileNav').classList.toggle('hidden')">
-☰
-</button>
-</div>
-
-
-<!-- Mobile Nav -->
-<div id="mobileNav" class="hidden sm:hidden px-4 pb-4 space-y-2 text-gray-700 dark:text-gray-300 text-base animate-fadeIn">
-<a href="#" class="block py-2 border-b border-gray-200 dark:border-gray-700">Home</a>
-<a href="javascript:void(0)" onclick="openHowToUse()" class="relative group">How To Use</a>
-<a href="about.html" class="block py-2">About</a>
-</div>
-</header>
-
-<!-- HOW TO USE POPUP -->
-<div id="howToUsePopup" 
-     class="fixed inset-0 bg-black/60 backdrop-blur-md z-[999] hidden flex justify-center items-center p-4">
-  
-  <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-2xl w-full shadow-2xl animate-fadeIn relative">
-
-    <!-- Close Button -->
-    <button onclick="closeHowToUse()" 
-            class="absolute top-3 right-3 text-gray-600 dark:text-gray-300 text-2xl hover:text-red-500">
-      ✖
-    </button>
-
-    <h2 class="text-2xl font-bold mb-4 text-sky-600 dark:text-sky-400 text-center">
-      How to Use WishCraft
-    </h2>
-
-    <video class="w-full rounded-xl shadow-lg" controls>
-      <source src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/howtouse.mp4" type="video/mp4">
-    </video>
-
+  <!-- HOW TO USE POPUP -->
+  <div id="howToUsePopup"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex justify-center items-center p-4">
+    <div class="glass rounded-3xl p-6 max-w-3xl w-full shadow-2xl relative animate-fadeIn">
+      <button onclick="closeHowToUse()"
+        class="absolute top-4 right-4 text-slate-500 hover:text-red-500 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">How to Use WishCraft</h2>
+      <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-lg bg-slate-100">
+        <video class="w-full h-full object-cover" controls>
+          <source
+            src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/howtouse.mp4"
+            type="video/mp4">
+        </video>
+      </div>
+    </div>
   </div>
-</div>
 
+  <!-- MAIN CONTENT -->
+  <main class="max-w-5xl mx-auto px-4 py-12 sm:py-20">
+
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+      <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight mb-4">
+        Create <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600">Magical</span>
+        Moments
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto">
+        Generate stunning, personalized birthday pages in seconds. Add music, photos, and your heartfelt wishes.
+      </p>
+    </div>
+
+
+    <!-- Generator Card -->
+    <div class="glass rounded-3xl p-6 sm:p-10 shadow-xl border border-white/50 relative overflow-hidden">
+      <!-- Decorative gradient line -->
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-500 via-indigo-500 to-sky-500"></div>
+
+      <form id="birthdayForm" enctype="multipart/form-data" class="space-y-8">
+
+        <!-- Template Selection -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <label class="block text-sm font-semibold text-slate-700 uppercase tracking-wider">Choose
+              Template</label>
+            <select id="template_selector" name="template"
+              class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all text-slate-700 font-medium">
+              <option value="birthday.html"
+                data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png"
+                selected>🎉 Classic Birthday</option>
+              <option value="birthday2.html"
+                data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd2-preview.png">
+                🎂 Modern Birthday</option>
+              <option value="birthday3.html"
+                data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd2-preview.png">
+                🎈 Fun Birthday</option>
+              <option value="anniversary.html"
+                data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/anversary-preview.png">
+                💑 Anniversary</option>
+            </select>
+          </div>
+
+          <!-- Preview -->
+          <div class="relative group">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity">
+            </div>
+            <img id="templatePreview"
+              src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png"
+              class="relative w-full h-48 object-cover rounded-2xl shadow-sm border border-slate-200/50" alt="Preview">
+          </div>
+        </div>
+
+        <div class="h-px bg-slate-200/60"></div>
+
+        <!-- Basic Info -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-slate-700">Celebrant's Name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Sarah" required
+              class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-slate-700">Page Title</label>
+            <input type="text" id="title" name="title" placeholder="e.g. Happy 21st Birthday!"
+              class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all">
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-slate-700">Wishes & Messages <span
+              class="text-slate-400 font-normal">(One per line)</span></label>
+          <textarea id="messages" name="messages" rows="4"
+            placeholder="Wishing you the best day ever!&#10;May all your dreams come true.&#10;Love, Bestie"
+            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all resize-none"></textarea>
+        </div>
+
+        <!-- Main Image -->
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-slate-700">Main Photo</label>
+          <div class="relative">
+            <input type="file" id="main_image" name="main_image" accept="image/*" required
+              class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-all text-slate-600">
+          </div>
+        </div>
+
+        <!-- Gift Section -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-slate-700">Select a Virtual Gift</label>
+          <div class="gift-options flex gap-4 overflow-x-auto pb-4 snap-x">
+            <!-- Gift Items -->
+            <div class="snap-start shrink-0">
+              <img
+                src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png"
+                onclick="selectGift(this)"
+                data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png"
+                class="w-24 h-24 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-sky-500 transition-all shadow-sm bg-white">
+            </div>
+            <div class="snap-start shrink-0">
+              <img
+                src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png"
+                onclick="selectGift(this)"
+                data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png"
+                class="w-24 h-24 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-sky-500 transition-all shadow-sm bg-white">
+            </div>
+            <div class="snap-start shrink-0">
+              <img
+                src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift2.png"
+                onclick="selectGift(this)"
+                data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift2.png"
+                class="w-24 h-24 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-sky-500 transition-all shadow-sm bg-white">
+            </div>
+            <div class="snap-start shrink-0">
+              <img
+                src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift3.png"
+                onclick="selectGift(this)"
+                data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift3.png"
+                class="w-24 h-24 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-sky-500 transition-all shadow-sm bg-white">
+            </div>
+          </div>
+          <input type="hidden" name="gift_image_selected" id="gift_image_selected">
+
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+              </svg>
+            </span>
+            <input type="file" name="gift_image" id="gift_image_upload" accept="image/*"
+              class="w-full pl-10 p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 file:hidden focus:ring-2 focus:ring-sky-500 outline-none">
+            <span class="absolute inset-y-0 right-4 flex items-center text-xs text-slate-400 pointer-events-none">Or
+              upload custom gift</span>
+          </div>
+        </div>
+
+        <!-- Music Section -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-slate-700">Background Music</label>
+          <select id="music_selector" name="music_option"
+            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700">
+            <option value="" selected>🎵 Select a melody...</option>
+            <option
+              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb1.mp3">
+              Happy Birthday Classic</option>
+            <option
+              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb2.mp3">
+              Upbeat Celebration</option>
+            <option
+              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb3.mp3">
+              Piano Serenade</option>
+            <option
+              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb4.mp3">
+              Party Vibes</option>
+          </select>
+          <input type="hidden" name="music_selected" id="music_selected" value="">
+
+          <audio id="music_preview" controls class="hidden w-full h-10 rounded-lg bg-slate-100"></audio>
+
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+                </path>
+              </svg>
+            </span>
+            <input type="file" name="music" id="music_upload" accept="audio/*"
+              class="w-full pl-10 p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 file:hidden focus:ring-2 focus:ring-sky-500 outline-none">
+            <span class="absolute inset-y-0 right-4 flex items-center text-xs text-slate-400 pointer-events-none">Or
+              upload custom audio</span>
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-slate-700">Gallery <span
+              class="text-slate-400 font-normal">(Max 8 photos)</span></label>
+          <div
+            class="group relative border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:bg-slate-50 hover:border-sky-400 transition-all cursor-pointer"
+            onclick="document.getElementById('gallery').click()">
+            <input type="file" id="gallery" name="gallery" accept="image/*" multiple class="hidden"
+              onchange="handleGallerySelect(this)">
+
+            <div id="gallery_placeholder" class="space-y-2 pointer-events-none">
+              <div
+                class="w-16 h-16 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-sm">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                  </path>
+                </svg>
+              </div>
+              <p class="text-slate-600 font-medium group-hover:text-sky-600 transition-colors">Drop photos here or
+                click to upload</p>
+              <p class="text-xs text-slate-400">Up to 8 images (JPG, PNG)</p>
+            </div>
+
+            <div id="gallery_previews" class="grid grid-cols-4 sm:grid-cols-6 gap-3 mt-4 hidden"></div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="w-full py-4 bg-gradient-to-r from-sky-500 to-indigo-600 text-white text-lg font-bold rounded-xl shadow-lg shadow-sky-500/30 hover:shadow-sky-500/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
+            Generate Magic Page
+          </span>
+          <div
+            class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          </div>
+        </button>
+
+      </form>
+
+      <!-- Result Section (Creative Ticket Style) -->
+      <div id="generatedLinkContainer" class="hidden mt-12 animate-fadeIn scroll-mt-10">
+
+        <div class="relative max-w-2xl mx-auto">
+          <!-- Ticket Visual -->
+          <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 relative z-10">
+            <!-- Ticket Header -->
+            <div
+              class="bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 p-6 text-white text-center relative overflow-hidden">
+              <div
+                class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20">
+              </div>
+              <h3 class="text-2xl font-bold tracking-tight relative z-10">🎉 It's Official!</h3>
+              <p class="text-sky-100 text-sm relative z-10">Your magical birthday page is ready</p>
+            </div>
+
+            <!-- Ticket Body -->
+            <div class="p-6 sm:p-8">
+              <div class="flex flex-col sm:flex-row gap-8 items-center">
+
+                <!-- QR Code -->
+                <div class="shrink-0 text-center group cursor-pointer" onclick="downloadQR()">
+                  <div
+                    class="w-32 h-32 bg-white p-2 rounded-xl border-2 border-slate-100 shadow-inner mx-auto relative overflow-hidden">
+                    <img id="qrCode" src="" alt="QR Code"
+                      class="w-full h-full object-contain opacity-50 transition-opacity duration-500">
+                    <div
+                      class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="text-xs text-slate-400 mt-2 font-mono">SCAN or CLICK</p>
+                </div>
+
+                <!-- Link & Actions -->
+                <div class="flex-1 w-full">
+                  <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Magic
+                    Link</label>
+                  <div
+                    class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200 mb-6 group focus-within:ring-2 focus-within:ring-sky-500 transition-all">
+                    <input type="text" id="generatedLink" readonly
+                      class="flex-1 bg-transparent border-none text-sm text-slate-700 font-mono focus:ring-0 px-2 w-full truncate">
+                    <button onclick="copyLink()"
+                      class="p-2 bg-white text-sky-600 rounded-lg shadow-sm hover:bg-sky-50 transition-colors border border-slate-100"
+                      title="Copy Link">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                        </path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <button onclick="visitPage()"
+                      class="col-span-2 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-slate-900/20">
+                      <span>Open Page</span>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                      </svg>
+                    </button>
+
+                    <!-- Instagram Story -->
+                    <button onclick="shareInstagram('story')"
+                      class="py-2.5 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white font-medium rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-md">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                      </svg>
+                      Story
+                    </button>
+
+                    <!-- Instagram Chat -->
+                    <button onclick="shareInstagram('chat')"
+                      class="py-2.5 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                        </path>
+                      </svg>
+                      Chat
+                    </button>
+
+                    <!-- WhatsApp -->
+                    <button onclick="shareWhatsApp()"
+                      class="py-2.5 bg-[#25D366]/10 text-[#25D366] font-medium rounded-xl hover:bg-[#25D366]/20 transition-colors flex items-center justify-center gap-2">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                      </svg>
+                      WhatsApp
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ticket Footer -->
+            <div class="bg-slate-50 p-4 border-t border-slate-100 text-center">
+              <p class="text-xs text-slate-400">Link expires never • Made with WishCraft</p>
+            </div>
+          </div>
+
+          <!-- Decorative Elements behind ticket -->
+          <div
+            class="absolute -top-4 -right-4 w-24 h-24 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+          </div>
+          <div
+            class="absolute -bottom-4 -left-4 w-24 h-24 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+          </div>
+        </div>
 
       </div>
 
     </div>
+  </main>
 
-  </div>
-</section>
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 bg-white/50 backdrop-blur-sm mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-8 text-center">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <span class="text-xl font-bold text-slate-700">WishCraft</span>
+        <span class="text-slate-400">•</span>
+        <span class="text-sm text-slate-500">Part of ToolNest Family</span>
+      </div>
+      <p class="text-slate-500 text-sm mb-4">Crafting digital happiness, one page at a time.</p>
+      <div class="flex justify-center gap-6 text-slate-400">
+        <a href="#" class="hover:text-sky-600 transition-colors">Privacy</a>
+        <a href="#" class="hover:text-sky-600 transition-colors">Terms</a>
+        <a href="#" class="hover:text-sky-600 transition-colors">Contact</a>
+      </div>
+      <p class="text-slate-400 text-xs mt-6">© 2025 WishCraft. All rights reserved.</p>
+    </div>
+  </footer>
 
-
-
-
-<div class="pt-32 sm:pt-28 flex justify-center items-start p-4 sm:p-8 w-full">
-
-  <!-- Message/Toast Container -->
+  <!-- Toast Container -->
   <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-  <!-- Main Card Container -->
-  <div class="bg-white/95 backdrop-blur-sm dark:bg-[#070c13]/70 p-6 sm:p-8 rounded-3xl shadow-2xl max-w-xl w-full text-center border border-gray-100/50 dark:border-gray-700/50 transition-colors duration-500">
-    <h1 class="text-3xl font-bold mb-6 text-sky-700 dark:text-sky-400 transition-colors duration-500">Generate a Best Wisher Page 🥳</h1>
-
-    <form id="birthdayForm" enctype="multipart/form-data" class="space-y-4 text-left">
-
-      <!-- Template Selector -->
-      <select id="template_selector" name="template"
-        class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
-        <option value="birthday.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png" selected>Birthday Template</option>
-        <option value="birthday2.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd2-preview.png">Birthday Template 2</option>
-        <option value="anniversary.html" data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/anversary-preview.png">Anniversary Template</option>
-        <option value="custom.html" data-preview="/static/previews/custom.png">More Templates Soon...</option>
-      </select>
-
-      <!-- Template Preview -->
-      <div id="templatePreviewContainer" class="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800/50 text-center">
-        <p class="text-gray-700 dark:text-gray-300 mb-2">Template Preview:</p>
-        <img id="templatePreview" src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd_privew.png" alt="Template Preview" class="mx-auto max-h-48 rounded-xl shadow-lg transition-all duration-300">
-      </div>
-
-      <!-- Name and Title -->
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name of Birthday Person</label>
-        <input type="text" id="name" name="name" placeholder="Yash" required
-               class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150">
-      </div>
-
-      <div>
-        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Page Title</label>
-        <input type="text" id="title" name="title" placeholder="Happy Birthday!"
-               class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150">
-      </div>
-
-      <!-- Messages -->
-      <div>
-        <label for="messages" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Messages (one per line)</label>
-        <textarea id="messages" name="messages" rows="4" placeholder="Write messages, each on a new line"
-                  class="mt-1 w-full p-3 border border-gray-300 rounded-xl resize-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150"></textarea>
-      </div>
-
-      <!-- Main Image -->
-      <div>
-        <label for="main_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Main Image</label>
-        <input type="file" id="main_image" name="main_image" accept="image/*" required
-               class="mt-1 w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-      </div>
-
-      <!-- Gift Options -->
-      <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gift Image (Choose or Upload)</label>
-        <div class="gift-options flex space-x-4 pb-3 mb-4 overflow-x-scroll scrollbar-hide">
-          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png" alt="Gift Option 1" onclick="selectGift(this)" data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png"
-               class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png" alt="Gift Option 2" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift1.png"
-               class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift2.png" alt="Gift Option 3" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift2.png"
-               class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift3.png" alt="Gift Option 4" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift3.png"
-               class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-          <img src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png" alt="Gift Option 5" onclick="selectGift(this)" data-gift-path="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png"
-               class="w-20 h-20 flex-shrink-0 object-cover cursor-pointer rounded-xl border-4 border-transparent hover:border-sky-700/50 dark:hover:border-sky-400/50 transition duration-150">
-        </div>
-        
-        <input type="hidden" name="gift_image_selected" id="gift_image_selected">
-        
-        <label for="gift_image_upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Or upload your own Gift Image (optional)</label>
-        <input type="file" name="gift_image" id="gift_image_upload" accept="image/*"
-               class="w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-      </div>
-
-      <!-- Music Options -->
-      <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
-        <label for="music_selector" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Background Music (Choose Track)</label>
-        
-        <select id="music_selector" name="music_option" 
-          class="mt-1 w-full p-3 border border-gray-300 rounded-xl focus:border-sky-700 focus:ring-1 focus:ring-sky-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-sky-400 dark:focus:ring-sky-400 transition duration-150 text-gray-700">
-          <option value="" selected>-- Select a pre-set music track --</option>
-          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb1.mp3">Track 1 - Happy Birthday 01</option>
-          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb2.mp3">Track 2 - Happy Birthday 02</option>
-          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb3.mp3">Track 3 - Happy Birthday 03</option>
-          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb4.mp3">Track 4 - Happy Birthday 04</option>
-          <option value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb5.mp3">Track 5 - Happy Birthday 05 ( upcomming..)</option>
-        </select>
-
-        <input type="hidden" name="music_selected" id="music_selected" value="">
-
-        <!-- Music Preview Player -->
-        <audio id="music_preview" controls class="mt-3 hidden w-full">
-          <source id="music_preview_source" src="" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
-
-        <label for="music_upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Or upload your own Music File (optional)</label>
-        <input type="file" name="music" id="music_upload" accept="audio/*"
-               class="w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-      </div>
-
-      <!-- Gallery Images -->
-      <div class="border-t pt-4 border-gray-100 dark:border-gray-700">
-        <label for="gallery" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gallery Images (up to 8)</label>
-        <input type="file" id="gallery" name="gallery" accept="image/*" multiple
-               class="mt-1 w-full p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-700/10 file:text-sky-700 hover:file:bg-sky-700/20 dark:file:bg-sky-400/10 dark:file:text-sky-400 dark:hover:file:bg-sky-400/20 transition duration-150 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-      </div>
-
-      <button type="submit" class="w-full py-3 bg-sky-700 text-white text-lg font-semibold rounded-xl hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 transition duration-300 shadow-md hover:shadow-lg mt-6">
-        🚀 Generate Page
-      </button>
-    </form>
-
-    <!-- Generated Link Section -->
-    <div id="generatedLinkContainer" class="hidden mt-8 p-4 bg-gray-50/50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
-      <p class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Your birthday page is ready! 🎉</p>
-      <input type="text" id="generatedLink" readonly
-             class="w-full p-3 border border-gray-300 rounded-lg text-center bg-white dark:bg-gray-700 mb-4 text-gray-600 dark:text-gray-300 font-mono text-sm select-all cursor-text">
-      <button class="w-full py-3 bg-emerald-600 text-white text-base font-semibold rounded-xl hover:bg-emerald-700 transition duration-300" onclick="visitPage()">
-        View Page
-      </button>
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay"
+    class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex flex-col justify-center items-center z-[9999] hidden">
+    <div class="bg-white p-6 rounded-2xl shadow-2xl flex flex-col items-center">
+      <div class="w-12 h-12 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
+      <p class="text-slate-700 font-medium">Creating magic...</p>
     </div>
-
-    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-  <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
-    Share your page link easily:
-  </p>
-
-  <div class="share-buttons flex flex-wrap justify-center gap-3 w-full">
-
-    <button 
-      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
-             bg-sky-700 hover:bg-sky-800 dark:bg-sky-500 dark:hover:bg-sky-400 shadow-md"
-      onclick="copyLink()">
-      Copy Link
-    </button>
-
-    <button 
-      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
-             bg-[#25D366] hover:bg-[#128C7E]"
-      onclick="shareWhatsApp()">
-      WhatsApp
-    </button>
-
-    <button 
-      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
-             bg-[#4267B2] hover:bg-[#365899]"
-      onclick="shareFacebook()">
-      Facebook
-    </button>
-
-    <button 
-      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
-             bg-[#1DA1F2] hover:bg-[#0c85d0]"
-      onclick="shareTwitter()">
-      X / Twitter
-    </button>
-
-    <button 
-      class="w-full sm:w-auto px-5 py-3 rounded-xl text-white font-medium transition duration-200 
-             bg-violet-600 hover:bg-violet-700"
-      onclick="sharePage()">
-      Share (Instagram, etc.)
-    </button>
-
-  </div>
-</div>
-
-<!-- line -->
-
-<div class="mt-12 pt-10 border-t border-gray-200 dark:border-gray-700">
-
-  
-
-   <!-- FOOTER (Glassmorphism + Personal Touch) -->
-<footer class="mt-20 w-full bg-white/10 dark:bg-black/10 backdrop-blur-xl border-t border-gray-300/30 dark:border-gray-700/30 py-8">
-  <div class="max-w-6xl mx-auto text-center px-4 space-y-2">
-
-    <!-- Brand Name -->
-    <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200">
-      WishCraft
-    </h2>
-
-    <!-- Tagline -->
-    <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-      Crafting magical celebration pages ✨
-    </p>
-
-    <!-- Your Name -->
-    <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mt-1">
-      Developed by Yash Verma
-    </p>
-
-    <!-- Copyright -->
-    <p class="text-gray-400 dark:text-gray-500 text-xs mt-2">
-      © 2025 WishCraft • Made with ❤️
-    </p>
-
-    <!-- Social Links (Optional) -->
-    <div class="flex justify-center items-center gap-4 mt-3">
-      <a href="https://github.com/Yash-verma2" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-sky-500 transition">
-        GitHub
-      </a>
-      <a href="https://www.linkedin.com/in/yash-verma-123/" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-sky-500 transition">
-        LinkedIn
-      </a>
-      <a href="https://twitter.com/YashVerma" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-sky-500 transition">
-        Twitter
-      </a>
-    </div>
-
-  </div>
-</footer>
-<!-- Loading Overlay -->
-<div id="loadingOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex flex-col justify-center items-center z-[9999] hidden">
-  <div class="w-64 bg-gray-200 dark:bg-gray-800 rounded-full h-4 overflow-hidden mb-4">
-    <div id="loadingBar" class="bg-sky-600 h-4 w-0 transition-all duration-300"></div>
-  </div>
-  <p class="text-white font-semibold">Generating your page... Please wait!</p>
-</div>
-
-
-
   </div>
 
   <script>
+    // --- Logic Scripts ---
+
     function openHowToUse() {
-  document.getElementById("howToUsePopup").classList.remove("hidden");
-}
+      document.getElementById("howToUsePopup").classList.remove("hidden");
+    }
 
-function closeHowToUse() {
-  document.getElementById("howToUsePopup").classList.add("hidden");
-}
-
-
+    function closeHowToUse() {
+      document.getElementById("howToUsePopup").classList.add("hidden");
+    }
 
     // Template Preview
     const templateSelector = document.getElementById('template_selector');
@@ -402,42 +585,40 @@ function closeHowToUse() {
     templateSelector.addEventListener('change', () => {
       const selectedOption = templateSelector.selectedOptions[0];
       const previewSrc = selectedOption.getAttribute('data-preview');
-      if(previewSrc) {
+      if (previewSrc) {
         templatePreview.src = previewSrc;
       }
     });
 
-    // Music Preview with Error Handling
+    // Gift Selection
+    function selectGift(img) {
+      const selectedPath = img.getAttribute('data-gift-path');
+      document.querySelectorAll('.gift-options img').forEach(i => {
+        i.classList.remove('border-sky-500', 'ring-2', 'ring-sky-200');
+        i.classList.add('border-transparent');
+      });
+      img.classList.remove('border-transparent');
+      img.classList.add('border-sky-500', 'ring-2', 'ring-sky-200');
+
+      document.getElementById('gift_image_selected').value = selectedPath;
+      document.getElementById('gift_image_upload').value = '';
+    }
+
+    // Default Gift
+    document.addEventListener('DOMContentLoaded', () => {
+      const defaultGift = document.querySelector('.gift-options img:first-child');
+      if (defaultGift) selectGift(defaultGift);
+    });
+
+    // Music Preview
     document.getElementById("music_selector").addEventListener("change", function () {
       const audio = document.getElementById("music_preview");
-      const source = document.getElementById("music_preview_source");
       const selected = this.value;
 
-      console.log("Music selector changed to:", selected);
-
       if (selected) {
-        source.src = selected;
+        audio.src = selected;
         audio.classList.remove("hidden");
-        
-        // Reset and load
-        audio.pause();
-        audio.currentTime = 0;
-        audio.load();
-        
-        // Try to play with error handling
-        const playAudio = async () => {
-          try {
-            await audio.play();
-            console.log("Preview playing successfully");
-          } catch (error) {
-            console.log("Preview play failed (normal for some browsers):", error);
-            showToast("Click the play button to preview the music", false);
-          }
-        };
-        
-        playAudio();
-        
-        // Store selection
+        audio.play().catch(e => console.log("Auto-play prevented"));
         document.getElementById("music_selected").value = selected;
         document.getElementById("music_upload").value = "";
       } else {
@@ -447,219 +628,160 @@ function closeHowToUse() {
       }
     });
 
-    // Uploaded Music Preview
     document.getElementById("music_upload").addEventListener("change", function () {
       const file = this.files[0];
       const audio = document.getElementById("music_preview");
-      const source = document.getElementById("music_preview_source");
-
-      console.log("Music upload changed:", file ? file.name : "None");
 
       if (file) {
         const url = URL.createObjectURL(file);
-        source.src = url;
+        audio.src = url;
         audio.classList.remove("hidden");
-        
-        audio.pause();
-        audio.currentTime = 0;
-        audio.load();
-        
-        const playAudio = async () => {
-          try {
-            await audio.play();
-            console.log("Upload preview playing successfully");
-          } catch (error) {
-            console.log("Upload preview play failed:", error);
-            showToast("Click the play button to preview your uploaded music", false);
-          }
-        };
-        
-        playAudio();
-
-        // Clear preset selection
+        audio.play().catch(e => console.log("Auto-play prevented"));
         document.getElementById("music_selector").value = "";
         document.getElementById("music_selected").value = "";
-      } else {
-        audio.pause();
-        audio.classList.add("hidden");
       }
     });
 
-    // Toast Notification
+    // Gallery Previews
+    function handleGallerySelect(input) {
+      const container = document.getElementById('gallery_previews');
+      const placeholder = document.getElementById('gallery_placeholder');
+
+      if (input.files && input.files.length > 0) {
+        container.innerHTML = ''; // Clear previous
+        container.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+
+        Array.from(input.files).forEach(file => {
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const div = document.createElement('div');
+              div.className = 'relative aspect-square rounded-xl overflow-hidden shadow-sm border border-slate-200 group';
+
+              const img = document.createElement('img');
+              img.src = e.target.result;
+              img.className = 'w-full h-full object-cover transition-transform group-hover:scale-110';
+
+              div.appendChild(img);
+              container.appendChild(div);
+            }
+            reader.readAsDataURL(file);
+          }
+        });
+      } else {
+        container.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    // Form Submission
+    document.getElementById('birthdayForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.remove('hidden');
+
+      fetch("/generate", {
+        method: "POST",
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          overlay.classList.add('hidden');
+          if (data.error) throw new Error(data.error);
+
+          const link = data.link;
+          document.getElementById('generatedLink').value = link;
+
+          // Generate QR Code
+          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
+          document.getElementById('qrCode').src = qrUrl;
+          document.getElementById('qrCode').classList.remove('opacity-50');
+
+          document.getElementById('generatedLinkContainer').classList.remove('hidden');
+          document.getElementById('generatedLinkContainer').scrollIntoView({ behavior: 'smooth' });
+          showToast("✨ Page generated successfully!");
+        })
+        .catch(err => {
+          overlay.classList.add('hidden');
+          showToast(err.message || "Something went wrong", true);
+        });
+    });
+
+    // Toast
     function showToast(message, isError = false) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      
-      const bgColor = isError ? 'bg-amber-500 dark:bg-amber-400' : 'bg-emerald-600 dark:bg-emerald-400';
-      const title = isError ? 'Error' : 'Success';
-
-      toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg transition duration-300 transform translate-x-full opacity-0 max-w-xs`;
-      toast.innerHTML = `<div class="font-semibold">${title}</div><div>${message}</div>`;
-
+      toast.className = `${isError ? 'bg-red-500' : 'bg-emerald-500'} text-white px-6 py-3 rounded-xl shadow-lg transform transition-all duration-300 translate-x-full opacity-0`;
+      toast.textContent = message;
       container.appendChild(toast);
 
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         toast.classList.remove('translate-x-full', 'opacity-0');
-        toast.classList.add('translate-x-0', 'opacity-100');
-      }, 10);
+      });
 
       setTimeout(() => {
-        toast.classList.remove('translate-x-0', 'opacity-100');
         toast.classList.add('translate-x-full', 'opacity-0');
-        setTimeout(() => {
-          container.removeChild(toast);
-        }, 300);
-      }, 4000);
+        setTimeout(() => container.removeChild(toast), 300);
+      }, 3000);
     }
 
-    // Gift Selection
-    function selectGift(img) {
-      const selectedPath = img.getAttribute('data-gift-path');
-
-      document.querySelectorAll('.gift-options img').forEach(i => i.classList.remove('border-sky-700', 'dark:border-sky-400', 'shadow-lg'));
-      
-      img.classList.add('border-sky-700', 'dark:border-sky-400', 'shadow-lg');
-      
-      document.getElementById('gift_image_selected').value = selectedPath;
-      document.getElementById('gift_image_upload').value = '';
-    }
-
-   document.getElementById('birthdayForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const formData = new FormData(this);
-
-  // Show loading overlay
-  const overlay = document.getElementById('loadingOverlay');
-  const bar = document.getElementById('loadingBar');
-  overlay.classList.remove('hidden');
-  bar.style.width = '0%';
-
-  // Simulate progress bar animation
-  let progress = 0;
-  const interval = setInterval(() => {
-    if(progress < 90) { // Max 90% until server responds
-      progress += Math.random() * 5; 
-      bar.style.width = progress + '%';
-    }
-  }, 200);
-
-  fetch("/generate", {
-    method: "POST",
-    body: formData,
-    headers: {'X-Requested-With': 'XMLHttpRequest'}
-  })
-  .then(res => {
-    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-    return res.json();
-  })
-  .then(data => {
-    if(data.error) throw new Error(data.error);
-
-    clearInterval(interval);
-    bar.style.width = '100%';
-
-    setTimeout(() => {
-      overlay.classList.add('hidden');
-    }, 500);
-
-    document.getElementById('generatedLink').value = data.link;
-    document.getElementById('generatedLinkContainer').style.display = "block";
-    showToast("Page generated successfully!", false);
-  })
-  .catch(err => {
-    clearInterval(interval);
-    overlay.classList.add('hidden');
-    console.error('Fetch error:', err);
-    showToast("Error generating page: " + err.message, true);
-  });
-});
-
-    // Utility Functions
+    // Share Utils
     function visitPage() {
       const link = document.getElementById('generatedLink').value;
-      if(link) window.open(link, "_blank");
-    }
-
-    function getGeneratedLink() {
-      return document.getElementById('generatedLink').value || "";
-    }
-
-    function shareWhatsApp() {
-      const link = getGeneratedLink();
-      if(link) window.open(`https://wa.me/?text=${encodeURIComponent("Check out this birthday page: " + link)}`, '_blank');
-      else showToast("Please generate a link first.", true);
-    }
-
-    function shareTwitter() {
-      const link = getGeneratedLink();
-      if(link) window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent("Check out this birthday page: " + link)}`, '_blank');
-      else showToast("Please generate a link first.", true);
-    }
-    
-    function shareFacebook() {
-      const link = getGeneratedLink();
-      const title = document.getElementById('title').value || "A New Birthday Page";
-      if(link) window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}&quote=${encodeURIComponent(`Check out this fun birthday page: ${title}!`)}`, '_blank');
-      else showToast("Please generate a link first.", true);
-    }
-
-    async function sharePage() {
-      const link = getGeneratedLink();
-      const title = document.getElementById('title').value || "Birthday Page";
-      if (!link) {
-        showToast("Please generate a link first.", true);
-        return;
-      }
-
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: title,
-            text: `Check out this birthday page for ${document.getElementById('name').value}!`,
-            url: link
-          });
-        } catch (error) {
-          if (error.name !== 'AbortError') {
-            showToast("Could not initiate native share. Copying link instead.", true);
-            copyLink();
-          }
-        }
-      } else {
-        showToast("Native share not supported. The link has been copied for manual sharing.", true);
-        copyLink();
-      }
+      if (link) window.open(link, "_blank");
     }
 
     function copyLink() {
-      const link = getGeneratedLink();
-      if(link) {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(link).then(() => {
-            showToast("Link copied to clipboard!");
-          }).catch(err => {
-            const linkInput = document.getElementById('generatedLink');
-            linkInput.select();
-            document.execCommand('copy');
-            showToast("Link copied to clipboard (using fallback)!");
-          });
-        } else {
-          const linkInput = document.getElementById('generatedLink');
-          linkInput.select();
-          document.execCommand('copy');
-          showToast("Link copied to clipboard (using fallback)!");
-        }
-      } else {
-        showToast("Please generate a link first.", true);
+      const link = document.getElementById('generatedLink');
+      link.select();
+      document.execCommand('copy');
+      showToast("Link copied to clipboard!");
+    }
+
+    function downloadQR() {
+      const src = document.getElementById('qrCode').src;
+      if (src) {
+        const a = document.createElement('a');
+        a.href = src;
+        a.download = 'wishcraft-qr.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       }
     }
 
-    // Set default gift selection on load
-    document.addEventListener('DOMContentLoaded', () => {
-      const defaultGift = document.querySelector('.gift-options img:first-child');
-      if (defaultGift) {
-        selectGift(defaultGift);
+    function shareWhatsApp() {
+      const link = document.getElementById('generatedLink').value;
+      if (link) window.open(`https://wa.me/?text=${encodeURIComponent("Check out this birthday page: " + link)}`, '_blank');
+    }
+
+    function shareInstagram(type) {
+      const link = document.getElementById('generatedLink').value;
+      if (!link) return;
+
+      // Try native share first for mobile
+      if (navigator.share) {
+        navigator.share({
+          title: 'Birthday Wish',
+          text: 'Check out this magical birthday page!',
+          url: link
+        }).catch(console.error);
+      } else {
+        // Fallback
+        copyLink();
+        if (type === 'story') {
+          showToast("Link copied! Open Instagram Story to paste.");
+          // Optional: Try to open Instagram
+          setTimeout(() => window.open('https://instagram.com'), 1000);
+        } else {
+          showToast("Link copied! Open Instagram Chat to paste.");
+          setTimeout(() => window.open('https://instagram.com/direct/inbox/'), 1000);
+        }
       }
-    });
+    }
   </script>
 </body>
+
 </html>
