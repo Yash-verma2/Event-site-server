@@ -230,7 +230,7 @@
                 data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd2-preview.png">
                 🎂 Modern Birthday</option>
               <option value="birthday3.html"
-                data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd2-preview.png">
+                data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd3-preview.png">
                 🎈 Fun Birthday</option>
               <option value="anniversary.html"
                 data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/anversary-preview.png">
@@ -255,7 +255,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label class="block text-sm font-semibold text-slate-700">Celebrant's Name</label>
-            <input type="text" id="name" name="name" placeholder="e.g. Sarah" required
+            <input type="text" id="name" name="name" placeholder="e.g. Yash" required
               class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all">
           </div>
           <div class="space-y-2">
@@ -292,7 +292,7 @@
               <img
                 src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/hbd-gift4.png"
                 onclick="selectGift(this)"
-                data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/Gemini_Generated_Image_jltdgjltdgjltdgj.png"
+                data-gift-path="https://github.com/Yash-verma2/Event-site-server/blob/main/templates/static/previews/hbd-gift4.png"
                 class="w-24 h-24 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-sky-500 transition-all shadow-sm bg-white">
             </div>
             <div class="snap-start shrink-0">
@@ -519,7 +519,7 @@
 
             <!-- Ticket Footer -->
             <div class="bg-slate-50 p-4 border-t border-slate-100 text-center">
-              <p class="text-xs text-slate-400">Link expires never • Made with WishCraft</p>
+              <p class="text-xs text-slate-400">Share the link with your loved one • Made with WishCraft</p>
             </div>
           </div>
 
@@ -754,7 +754,7 @@
 
     function shareWhatsApp() {
       const link = document.getElementById('generatedLink').value;
-      if (link) window.open(`https://wa.me/?text=${encodeURIComponent("Check out this birthday page: " + link)}`, '_blank');
+      if (link) window.open(`https://wa.me/?text=${encodeURIComponent("Surprise For You: " + link)}`, '_blank');
     }
 
     function shareInstagram(type) {
@@ -765,7 +765,7 @@
       if (navigator.share) {
         navigator.share({
           title: 'Birthday Wish',
-          text: 'Check out this magical birthday page!',
+          text: 'Surprise For You: ' + link,
           url: link
         }).catch(console.error);
       } else {

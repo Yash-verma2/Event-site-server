@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,46 +10,71 @@
         /* Custom config for romantic colors and Inter font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
-        
+
         body {
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scroll from background */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll from background */
             /* Added minimal horizontal padding to prevent content from hugging screen edges */
-            padding-left: 0.5rem; 
+            padding-left: 0.5rem;
             padding-right: 0.5rem;
         }
 
         /* 1. Unforgettable Background: Starlight Effect */
         .starlight-bg {
-            background-color: #1a0033; /* Deep dark purple/blue */
-            background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                              radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                              radial-gradient(white, rgba(255,255,255,.1) 3px, transparent 40px);
+            background-color: #1a0033;
+            /* Deep dark purple/blue */
+            background-image: radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 3px, transparent 40px);
             background-size: 550px 550px, 350px 350px, 250px 250px;
             background-position: 0 0, 40px 60px, 130px 270px;
             animation: move-stars 100s linear infinite;
         }
 
         @keyframes move-stars {
-            from { background-position: 0 0, 40px 60px, 130px 270px; }
-            to { background-position: 550px 550px, 390px 410px, 380px 720px; }
+            from {
+                background-position: 0 0, 40px 60px, 130px 270px;
+            }
+
+            to {
+                background-position: 550px 550px, 390px 410px, 380px 720px;
+            }
         }
 
         /* 2. Enhanced Animations */
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
         }
+
         .heartbeat {
             animation: heartbeat 2s ease-in-out infinite;
             text-shadow: 0 0 12px rgba(255, 105, 180, 0.9);
         }
-        
+
         /* NEW: Pulsing Text for Infinite Connection */
         @keyframes pulse-light {
-            0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(255, 192, 203, 0.8); }
-            50% { opacity: 0.8; text-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+
+            0%,
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 10px rgba(255, 192, 203, 0.8);
+            }
+
+            50% {
+                opacity: 0.8;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+            }
         }
+
         .pulsing-text {
             animation: pulse-light 3s ease-in-out infinite;
         }
@@ -57,35 +83,49 @@
             transform: scale(1.1) rotate(-2deg);
             box-shadow: 0 15px 30px rgba(255, 87, 128, 0.8);
         }
-        
+
         /* Typewriter effect styles - FIX for responsiveness */
         .typewriter-text {
             overflow: hidden;
-            border-right: .15em solid white; 
+            border-right: .15em solid white;
             /* REMOVED: white-space: nowrap; to allow wrapping */
             margin: 0 auto;
-            letter-spacing: .08em; /* Reduced spacing slightly to help fit */
+            letter-spacing: .08em;
+            /* Reduced spacing slightly to help fit */
             animation: blink-caret .75s step-end infinite;
-            width: 0; /* JS controls width */
-            text-align: center; /* Center text across multiple lines */
-            white-space: normal; /* Allow text to wrap naturally */
+            width: 0;
+            /* JS controls width */
+            text-align: center;
+            /* Center text across multiple lines */
+            white-space: normal;
+            /* Allow text to wrap naturally */
         }
-        
+
         /* New rule to control the maximum visible width of the typewriter container */
         .typewriter-container {
-            width: 90%; /* Limit container width to ensure it fits mobile screen */
-            max-width: 40rem; /* Same as max-w-lg or similar for desktop */
+            width: 90%;
+            /* Limit container width to ensure it fits mobile screen */
+            max-width: 40rem;
+            /* Same as max-w-lg or similar for desktop */
             margin: 0 auto;
         }
 
         @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: white; }
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: white;
+            }
         }
+
         /* Ensure audio controls are visible against dark background */
         audio {
             /* Use a simple filter invert for default controls on dark bg */
-            filter: brightness(0.8) sepia(1) hue-rotate(200deg) saturate(3); 
+            filter: brightness(0.8) sepia(1) hue-rotate(200deg) saturate(3);
         }
 
         /* 3. Starlight Confetti CSS */
@@ -99,78 +139,115 @@
             overflow: hidden;
             z-index: 10;
         }
+
         .confetti-particle {
             position: absolute;
-            color: #ffcccc; /* Soft pink/white hearts */
+            color: #ffcccc;
+            /* Soft pink/white hearts */
             font-size: 1.5rem;
             animation: float-up 12s linear infinite;
             opacity: 0;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
+
         @keyframes float-up {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            90% {
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
         }
 
         /* 🌟 R-E-S-P-O-N-S-I-V-E Improvements 🌟 */
-        
+
         /* 1. Ultra-Small Mobile (<= 480px) */
-        @media (max-width: 480px) { 
+        @media (max-width: 480px) {
             .h1-responsive {
-                font-size: 2.5rem; /* 40px - safer size for title on tiny screens */
-                line-height: 1.1; 
+                font-size: 2.5rem;
+                /* 40px - safer size for title on tiny screens */
+                line-height: 1.1;
             }
+
             .h2-responsive {
-                font-size: 1.75rem; /* 28px */
+                font-size: 1.75rem;
+                /* 28px */
             }
+
             .infinite-responsive {
-                font-size: 2.25rem; /* 36px */
+                font-size: 2.25rem;
+                /* 36px */
             }
+
             .main-content-padding {
-                padding: 1.5rem; /* p-6 equivalent for minimal padding */
+                padding: 1.5rem;
+                /* p-6 equivalent for minimal padding */
             }
+
             .max-w-4xl {
-                max-width: 100%; /* Allow content to use full width to prevent overflow */
+                max-width: 100%;
+                /* Allow content to use full width to prevent overflow */
             }
         }
-        
+
         /* 2. Standard Mobile (481px to 640px) */
         @media (min-width: 481px) and (max-width: 640px) {
             .h1-responsive {
-                font-size: 3rem; /* 48px - standard mobile size */
+                font-size: 3rem;
+                /* 48px - standard mobile size */
             }
+
             .h2-responsive {
-                font-size: 2rem; /* 32px */
+                font-size: 2rem;
+                /* 32px */
             }
+
             .infinite-responsive {
-                font-size: 2.5rem; /* 40px */
+                font-size: 2.5rem;
+                /* 40px */
             }
+
             .main-content-padding {
-                padding: 2rem; /* p-8 for better, airy mobile padding */
+                padding: 2rem;
+                /* p-8 for better, airy mobile padding */
             }
+
             .max-w-4xl {
-                max-width: 95%; 
+                max-width: 95%;
             }
         }
-        
+
         /* Desktop/Tablet (>= 641px) */
         @media (min-width: 641px) {
             .main-content-padding {
-                padding: 4rem; /* Generous p-16 for desktop */
+                padding: 4rem;
+                /* Generous p-16 for desktop */
             }
+
             .max-w-4xl {
-                max-width: 48rem; /* Use Tailwind's standard max-w-4xl width */
+                max-width: 48rem;
+                /* Use Tailwind's standard max-w-4xl width */
             }
         }
-        
+
         /* PREMIUM CARD STYLING */
         .premium-card {
             transition: all 0.5s ease;
             /* Subtle pink glow for depth */
             box-shadow: 0 0 40px rgba(255, 105, 180, 0.4), 0 0 15px rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 105, 180, 0.6); /* Defined border for structure */
+            border: 1px solid rgba(255, 105, 180, 0.6);
+            /* Defined border for structure */
         }
 
         .premium-card:hover {
@@ -180,53 +257,58 @@
         }
     </style>
 </head>
+
 <body class="starlight-bg min-h-screen flex flex-col items-center py-4 sm:py-10 px-2 sm:px-4 text-white">
 
     <div id="confetti-overlay" class="confetti"></div>
 
     <!-- Background Music Player -->
-    <audio id="background-music" loop 
-        class="hidden"
-        title="Our Anniversary Music"
-    >
+    <audio id="background-music" loop class="hidden" title="Our Anniversary Music">
         <source src="{{ music }}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    
+
     <!-- Visible Audio Controls (for user interaction) -->
     <div id="audio-controls-visible" class="fixed top-4 right-4 z-50 hidden">
-         <audio controls loop 
-             class="w-36 sm:w-48 p-2 rounded-xl shadow-md border border-pink-400/20 transition duration-300"
-             title="Our Anniversary Music"
-             src="{{ music }}"
-             ></audio>
+        <audio controls loop
+            class="w-36 sm:w-48 p-2 rounded-xl shadow-md border border-pink-400/20 transition duration-300"
+            title="Our Anniversary Music" src="{{ music }}"></audio>
     </div>
 
     <!-- Welcome Overlay -->
-    <div id="welcome-overlay" class="fixed inset-0 bg-black bg-opacity-95 flex flex-col items-center justify-center z-50 transition-opacity duration-700 p-4">
-        <h2 class="text-4xl sm:text-6xl font-extrabold text-pink-400 mb-6 heartbeat font-['Dancing_Script'] text-center">For the One Who Shares the Journey</h2>
-        <p class="text-lg sm:text-xl text-gray-300 mb-10 text-center">Click below to begin our moment and start the music.</p>
-        <button onclick="startExperience()" class="px-8 sm:px-12 py-4 sm:py-5 bg-yellow-400 text-purple-900 font-black text-xl sm:text-2xl rounded-full shadow-2xl shadow-yellow-400/50 hover:bg-yellow-500 transition duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+    <div id="welcome-overlay"
+        class="fixed inset-0 bg-black bg-opacity-95 flex flex-col items-center justify-center z-50 transition-opacity duration-700 p-4">
+        <h2
+            class="text-4xl sm:text-6xl font-extrabold text-pink-400 mb-6 heartbeat font-['Dancing_Script'] text-center">
+            For the One Who Shares the Journey</h2>
+        <p class="text-lg sm:text-xl text-gray-300 mb-10 text-center">Click below to begin our moment and start the
+            music.</p>
+        <button onclick="startExperience()"
+            class="px-8 sm:px-12 py-4 sm:py-5 bg-yellow-400 text-purple-900 font-black text-xl sm:text-2xl rounded-full shadow-2xl shadow-yellow-400/50 hover:bg-yellow-500 transition duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-300">
             ▶️ Enter Our Moment
         </button>
     </div>
 
     <!-- Main Content Container: Added premium-card class -->
-    <div id="main-content" class="w-full max-w-4xl bg-white bg-opacity-10 backdrop-blur-sm main-content-padding rounded-3xl premium-card">
-        
+    <div id="main-content"
+        class="w-full max-w-4xl bg-white bg-opacity-10 backdrop-blur-sm main-content-padding rounded-3xl premium-card">
+
         <div class="text-center mb-10">
-            <h1 class="text-5xl h1-responsive sm:text-7xl font-extrabold text-pink-400 mb-4 heartbeat font-['Dancing_Script']">
+            <h1
+                class="text-5xl h1-responsive sm:text-7xl font-extrabold text-pink-400 mb-4 heartbeat font-['Dancing_Script']">
                 ✨ Celebrating Us, {{ name }}! ✨
             </h1>
-            
+
             <!-- Typewriter Container added for boundary control -->
             <div class="typewriter-container">
-                <p id="typewriter-line" class="typewriter-text text-xl md:text-2xl text-white font-medium mx-auto mt-4 w-full"></p>
+                <p id="typewriter-line"
+                    class="typewriter-text text-xl md:text-2xl text-white font-medium mx-auto mt-4 w-full"></p>
             </div>
-            
+
             <div class="mt-8 p-4 bg-pink-600/30 rounded-xl inline-block shadow-lg border border-pink-400/50">
                 <p class="text-lg sm:text-xl font-semibold mb-3 text-yellow-300">The Depth of Our Connection is...</p>
-                <p id="infinite-message" class="text-5xl infinite-responsive sm:text-6xl text-pink-400 font-extrabold tracking-widest pulsing-text">
+                <p id="infinite-message"
+                    class="text-5xl infinite-responsive sm:text-6xl text-pink-400 font-extrabold tracking-widest pulsing-text">
                     ∞ INFINITE ∞
                 </p>
                 <p class="text-base sm:text-lg text-gray-300 mt-2">...A bond created in every shared moment.</p>
@@ -234,13 +316,11 @@
         </div>
 
         <div id="mainImageContainer" class="w-full max-w-xl max-w-full mx-auto mb-10">
-            <img 
-                src="{{ main_image }}" 
-                onerror="this.onerror=null;this.src='https://placehold.co/600x400/8b5cf6/ffffff?text=Our+Special+Photo'" 
-                alt="Main Image" 
-                class="w-full h-auto object-cover rounded-3xl shadow-purple-600/50 shadow-xl transition duration-500 hover:shadow-2xl hover:scale-[1.02] border-4 border-white/50"
-            >
-            </div>
+            <img src="{{ main_image }}"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x400/8b5cf6/ffffff?text=Our+Special+Photo'"
+                alt="Main Image"
+                class="w-full h-auto object-cover rounded-3xl shadow-purple-600/50 shadow-xl transition duration-500 hover:shadow-2xl hover:scale-[1.02] border-4 border-white/50">
+        </div>
 
         <h2 class="text-3xl h2-responsive sm:text-4xl font-bold text-pink-300 mb-6 mt-10">Sweet Messages:</h2>
         <!-- Dynamic Messages Container -->
@@ -249,41 +329,55 @@
                 <!-- Messages fetched from the server context will be dynamically rendered here. -->
             </div>
         </div>
-        
+
         <h2 class="text-3xl h2-responsive sm:text-4xl font-bold text-pink-300 mt-12 mb-6">Your Eternal Gift Awaits!</h2>
-        <div id="gift-wrapper" class="relative group cursor-pointer transition transform duration-500 gift-box mx-auto w-fit" onclick="openGift()">
-            <img 
-                id="gift-image"
-                src="{{ gift_image }}" 
-                onerror="this.onerror=null;this.src='https://placehold.co/200x200/ffbb33/1a0033?text=CLICK+TO+OPEN'" 
-                alt="Gift Image" 
-                class="w-36 h-36 sm:w-48 sm:h-48 object-cover rounded-full shadow-2xl transition duration-500 border-8 border-yellow-300/80"
-            >
-            <div id="gift-overlay" class="absolute inset-0 flex items-center justify-center bg-pink-700 bg-opacity-80 rounded-full transition-opacity duration-700 opacity-100 group-hover:opacity-0">
-                <svg class="w-12 h-12 sm:w-16 sm:h-16 text-white animate-pulse" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        <div id="gift-wrapper"
+            class="relative group cursor-pointer transition transform duration-500 gift-box mx-auto w-fit"
+            onclick="openGift()">
+            <img id="gift-image" src="{{ gift_image }}"
+                onerror="this.onerror=null;this.src='https://placehold.co/200x200/ffbb33/1a0033?text=CLICK+TO+OPEN'"
+                alt="Gift Image"
+                class="w-36 h-36 sm:w-48 sm:h-48 object-cover rounded-full shadow-2xl transition duration-500 border-8 border-yellow-300/80">
+            <div id="gift-overlay"
+                class="absolute inset-0 flex items-center justify-center bg-pink-700 bg-opacity-80 rounded-full transition-opacity duration-700 opacity-100 group-hover:opacity-0">
+                <svg class="w-12 h-12 sm:w-16 sm:h-16 text-white animate-pulse" fill="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                 </svg>
             </div>
         </div>
-        
+
         <div class="mt-12 w-full max-w-lg mx-auto text-center space-y-6">
             <h3 class="text-xl sm:text-2xl font-semibold text-pink-300 mt-8">Precious Memories:</h3>
-            <a href="{{ gallery_link }}" 
-               class="inline-block px-8 py-3 sm:px-10 sm:py-4 bg-yellow-400 text-purple-900 font-black text-lg sm:text-xl rounded-full shadow-2xl shadow-yellow-400/50 hover:bg-yellow-500 transition duration-300 transform hover:scale-105 hover:shadow-yellow-500/70 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-            >
+            <a href="{{ gallery_link }}"
+                class="inline-block px-8 py-3 sm:px-10 sm:py-4 bg-yellow-400 text-purple-900 font-black text-lg sm:text-xl rounded-full shadow-2xl shadow-yellow-400/50 hover:bg-yellow-500 transition duration-300 transform hover:scale-105 hover:shadow-yellow-500/70 focus:outline-none focus:ring-4 focus:ring-yellow-300">
                 🌌 Dive into Our Gallery Memories
             </a>
         </div>
+        <footer style="
+  text-align:center;
+  font-size:0.7rem;
+  opacity:0.55;
+  margin-top:2rem;
+  padding-bottom:1rem;
+  font-family:'Baloo 2', sans-serif;
+">
+            Made for you with
+            <a href="https://toolnest-yash.vercel.app" style="color:inherit; text-decoration:none; font-weight:600;">
+                ToolNest's WishCraft ✨
+            </a>
+        </footer>
 
-    </div> 
-    
+    </div>
+
     <script>
         // --- Dynamic Data Fetch from Server Context ---
         let msgs;
         try {
             // Using the requested server-side template syntax to fetch messages as a JSON array.
-            const messagesString = `{{ messages|tojson }}`; 
-            
+            const messagesString = `{{ messages|tojson }}`;
+
             // Check if the template variable was successfully rendered as JSON
             if (messagesString && messagesString.startsWith('[')) {
                 msgs = JSON.parse(messagesString);
@@ -309,10 +403,10 @@
         function renderMessages(messages) {
             const container = document.getElementById('messages-container');
             if (!container || !Array.isArray(messages) || messages.length === 0) {
-                 if (container) {
+                if (container) {
                     container.innerHTML = '<p class="text-base sm:text-lg leading-relaxed text-gray-400">No messages found. A new chapter awaits our words!</p>';
-                 }
-                 return;
+                }
+                return;
             }
 
             container.innerHTML = ''; // Clear existing content
@@ -320,10 +414,10 @@
             messages.forEach((msg, index) => {
                 const p = document.createElement('p');
                 p.classList.add(
-                    'text-base', 'sm:text-lg', 'leading-relaxed', 
+                    'text-base', 'sm:text-lg', 'leading-relaxed',
                     'border-b', 'border-pink-400/20', 'pb-3'
                 );
-                
+
                 // Remove the border for the last element
                 if (index === messages.length - 1) {
                     p.classList.remove('border-b', 'pb-3');
@@ -361,11 +455,11 @@
             let i = 0;
             const element = document.getElementById(elementId);
             if (!element) return;
-            
+
             // Since we removed 'white-space: nowrap', the typewriter logic changes slightly.
             // We now reveal the text by slicing the full message and applying it to innerHTML,
             // allowing the browser to wrap it normally inside its container.
-            
+
             function type() {
                 if (i < text.length) {
                     // Update the text content with one more character
@@ -388,7 +482,7 @@
             // NEW: Render the fetched messages
             renderMessages(msgs);
         }
-        
+
         // --- 3. Gift Opening Modal Logic ---
         function openGift() {
             const giftWrapper = document.getElementById('gift-wrapper');
@@ -401,12 +495,12 @@
 
             // Simple visual effect after click
             if (giftWrapper) {
-                giftWrapper.classList.remove('animate-bounce'); 
+                giftWrapper.classList.remove('animate-bounce');
                 // Note: animate-spin-once keyframe is defined in the script below
-                giftWrapper.classList.add('animate-spin-once'); 
+                giftWrapper.classList.add('animate-spin-once');
                 setTimeout(() => giftWrapper.classList.remove('animate-spin-once'), 1000);
             }
-            
+
             // Show a simple message box instead of alert()
             const messageBox = document.createElement('div');
             messageBox.innerHTML = `
@@ -432,13 +526,13 @@
             for (let i = 0; i < numberOfParticles; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('confetti-particle');
-                
+
                 // Randomize emoji, position, delay, and duration
                 particle.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
                 particle.style.left = `${Math.random() * 100}vw`;
                 particle.style.animationDelay = `${Math.random() * 10}s`;
                 particle.style.animationDuration = `${10 + Math.random() * 5}s`;
-                
+
                 container.appendChild(particle);
             }
         }
@@ -453,6 +547,7 @@
         }`;
         document.head.appendChild(styleSheet);
     </script>
-    
+
 </body>
+
 </html>

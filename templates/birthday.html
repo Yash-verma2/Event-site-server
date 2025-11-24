@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>{{ title }} 🎂</title>
@@ -8,254 +9,333 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 
-<style>
-/* GLOBAL RESET */
-* { margin:0; padding:0; box-sizing:border-box; }
+  <style>
+    /* GLOBAL RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* HIDE SCROLLBAR */
-body::-webkit-scrollbar { display: none; }
-body { -ms-overflow-style: none; scrollbar-width: none; }
+    /* HIDE SCROLLBAR */
+    body::-webkit-scrollbar {
+      display: none;
+    }
 
-/* MAIN LAYOUT */
-html, body {
-  width:100%;
-  height:100%;
-  font-family:'Baloo 2', cursive;
-  background: linear-gradient(to bottom right,#ffd6e7,#ffe8f0);
-  color:#444;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  overflow-x:hidden;
-  overflow-y:visible !important;   /* IMPORTANT FIX */
-  text-align:center;
-  padding:20px;
-  position:relative;               /* IMPORTANT FIX */
-  z-index:0;
-}
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* MAIN LAYOUT */
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Baloo 2', cursive;
+      background: linear-gradient(to bottom right, #ffd6e7, #ffe8f0);
+      color: #444;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      overflow-y: visible !important;
+      /* IMPORTANT FIX */
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      /* IMPORTANT FIX */
+      z-index: 0;
+    }
 
 
 
-/* GIFT BOX */
-#gift {
-  width:60vw;
-  max-width:300px;
-  height:60vw;
-  max-height:300px;
-  background:url('{{ gift_image }}') no-repeat center/contain;
-  cursor:pointer;
-  animation:float 2s ease-in-out infinite alternate;
-  transition:transform 0.5s;
-  margin-bottom:20px;
-}
-@keyframes float {
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-15px)}
-}
+    /* GIFT BOX */
+    #gift {
+      width: 60vw;
+      max-width: 300px;
+      height: 60vw;
+      max-height: 300px;
+      background:url('{{ gift_image }}') no-repeat center/contain;
+      cursor: pointer;
+      animation: float 2s ease-in-out infinite alternate;
+      transition: transform 0.5s;
+      margin-bottom: 20px;
+    }
 
-.tap-to-open {
-  font-size:1.5rem;
-  color:#ff4081;
-  margin-top:10px;
-  animation:blink 1.5s infinite;
-  font-weight:bold;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    @keyframes float {
+      0% {
+        transform: translateY(0)
+      }
 
-/* HIDDEN CELEBRATION SECTION */
-#celebration {
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  margin-top:20px;
-}
+      100% {
+        transform: translateY(-15px)
+      }
+    }
 
-.gif-container {
-  width:90vw;
-  max-width:400px;
-  height:90vw;
-  max-height:400px;
-  background:url('{{ main_image }}') no-repeat center/cover;
-  border-radius:20px;
-  margin-bottom:20px;
-  box-shadow:0 0 20px rgba(255,182,193,0.8);
-}
+    .tap-to-open {
+      font-size: 1.5rem;
+      color: #ff4081;
+      margin-top: 10px;
+      animation: blink 1.5s infinite;
+      font-weight: bold;
+    }
 
-h1 {
-  font-size:2.3rem;
-  color:#ff66b2;
-  margin-bottom:20px;
-  text-shadow:2px 2px 8px rgba(255,105,180,0.8);
-}
+    @keyframes blink {
 
-.card {
-  background:#fff0f5;
-  border-radius:20px;
-  padding:20px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.1);
-  width:90%;
-  max-width:450px;
-  animation:fadeIn 2s ease forwards;
-  margin-bottom:20px;
-}
-#typed { font-size:1.5rem; min-height:100px; }
-.tap-text { font-size:1.2rem; margin-top:10px; color:#666; }
+      0%,
+      100% {
+        opacity: 1
+      }
 
-@keyframes fadeIn {
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
-}
+      50% {
+        opacity: 0.5
+      }
+    }
 
-/* BALLOONS — FINAL FIX */
-.balloon {
-  position: fixed;
-  bottom: -150px;
-  pointer-events: none;
-  z-index: 999999;
-  border-radius: 50% 50% 45% 45%;
-  opacity: 0.95;
-  animation: rise var(--speed) linear forwards, sway 3s ease-in-out infinite;
-  box-shadow: inset -6px -8px 14px rgba(255,255,255,0.2),
-              0 10px 20px rgba(0,0,0,0.1);
-}
+    /* HIDDEN CELEBRATION SECTION */
+    #celebration {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
 
-.balloon::after {
-  content: "";
-  position: absolute;
-  left: 20%;
-  top: 20%;
-  width: 30%;
-  height: 35%;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-}
+    .gif-container {
+      width: 90vw;
+      max-width: 400px;
+      height: 90vw;
+      max-height: 400px;
+      background:url('{{ main_image }}') no-repeat center/cover;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.8);
+    }
 
-.balloon::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  width: 2px;
-  height: 55px;
-  transform: translateX(-50%);
-  background: #ccc;
-}
+    h1 {
+      font-size: 2.3rem;
+      color: #ff66b2;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.8);
+    }
 
-@keyframes rise {
-  0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 1; }
-  100% { transform: translateY(-130vh); opacity: 1; }
-}
+    .card {
+      background: #fff0f5;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 450px;
+      animation: fadeIn 2s ease forwards;
+      margin-bottom: 20px;
+    }
 
-@keyframes sway {
-  0% { transform: translateX(0) rotate(-3deg); }
-  50% { transform: translateX(25px) rotate(3deg); }
-  100% { transform: translateX(0) rotate(-3deg); }
-}
+    #typed {
+      font-size: 1.5rem;
+      min-height: 100px;
+    }
 
-</style>
+    .tap-text {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #666;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* BALLOONS — FINAL FIX */
+    .balloon {
+      position: fixed;
+      bottom: -150px;
+      pointer-events: none;
+      z-index: 999999;
+      border-radius: 50% 50% 45% 45%;
+      opacity: 0.95;
+      animation: rise var(--speed) linear forwards, sway 3s ease-in-out infinite;
+      box-shadow: inset -6px -8px 14px rgba(255, 255, 255, 0.2),
+        0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      left: 20%;
+      top: 20%;
+      width: 30%;
+      height: 35%;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 2px;
+      height: 55px;
+      transform: translateX(-50%);
+      background: #ccc;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-130vh);
+        opacity: 1;
+      }
+    }
+
+    @keyframes sway {
+      0% {
+        transform: translateX(0) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateX(25px) rotate(3deg);
+      }
+
+      100% {
+        transform: translateX(0) rotate(-3deg);
+      }
+    }
+  </style>
 
 </head>
 
 <body>
 
-<div id="gift" onclick="openGift()"></div>
-<div class="tap-to-open">🎁 Tap the gift to open your surprise! 🎁</div>
+  <div id="gift" onclick="openGift()"></div>
+  <div class="tap-to-open">🎁 Tap the gift to open your surprise! 🎁</div>
 
-<div id="celebration">
-  <div class="gif-container"></div>
-  <h1>Happy Birthday, {{ name }}! 🎉</h1>
+  <div id="celebration">
+    <div class="gif-container"></div>
+    <h1>Happy Birthday, {{ name }}! 🎉</h1>
 
-  <div class="card">
-    <div id="typed"></div>
-    <div class="tap-text">(Tap anywhere to continue ➡️)</div>
+    <div class="card">
+      <div id="typed"></div>
+      <div class="tap-text">(Tap anywhere to continue ➡️)</div>
+    </div>
   </div>
-</div>
+  <footer style="
+  text-align:center;
+  font-size:0.7rem;
+  opacity:0.55;
+  margin-top:2rem;
+  padding-bottom:1rem;
+  font-family:'Baloo 2', sans-serif;">
+    Made for you with
+    <a href="https://toolnest-yash.vercel.app" style="color:inherit; text-decoration:none; font-weight:600;">
+      ToolNest's WishCraft ✨
+    </a>
+  </footer>
 
-<audio id="birthdayMusic" src="{{ music }}"></audio>
 
-<script>
-let opened = false;
-const msgs = JSON.parse(`{{ messages|tojson }}`);
-const galleryLink = "{{ gallery_link }}";
 
-function startTyping() {
-  new Typed('#typed', { strings: msgs, typeSpeed:50, backSpeed:25, backDelay:1500, loop:true });
-}
 
-function playMusic() {
-  birthdayMusic.volume = 0.5;
-  birthdayMusic.play().catch(()=>{});
-}
+  <audio id="birthdayMusic" src="{{ music }}"></audio>
 
-function launchConfetti() {
-  const duration=4500;
-  const end=Date.now()+duration;
-  (function frame(){
-    confetti({ particleCount:5, angle:60, spread:55, origin:{x:0} });
-    confetti({ particleCount:5, angle:120, spread:55, origin:{x:1} });
-    if(Date.now()<end) requestAnimationFrame(frame);
-  })();
-}
+  <script>
+    let opened = false;
+    const msgs = JSON.parse(`{{ messages|tojson }}`);
+    const galleryLink = "{{ gallery_link }}";
 
-/* ------------------ BALLOON GENERATOR ------------------ */
-function createBalloons() {
-  for(let i=0;i<18;i++){
-    const b=document.createElement("div");
-    b.className="balloon";
+    function startTyping() {
+      new Typed('#typed', { strings: msgs, typeSpeed: 50, backSpeed: 25, backDelay: 1500, loop: true });
+    }
 
-    const size = 40 + Math.random()*60;
-    b.style.width = size + "px";
-    b.style.height = size*1.25 + "px";
-    b.style.left = Math.random()*95 + "vw";
+    function playMusic() {
+      birthdayMusic.volume = 0.5;
+      birthdayMusic.play().catch(() => { });
+    }
 
-    const c1 = `rgb(${200+Math.random()*55}, ${80+Math.random()*120}, ${140+Math.random()*120})`;
-    const c2 = `rgb(${120+Math.random()*135}, ${120+Math.random()*80}, ${120+Math.random()*80})`;
+    function launchConfetti() {
+      const duration = 4500;
+      const end = Date.now() + duration;
+      (function frame() {
+        confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+        confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
 
-    b.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
+    /* ------------------ BALLOON GENERATOR ------------------ */
+    function createBalloons() {
+      for (let i = 0; i < 18; i++) {
+        const b = document.createElement("div");
+        b.className = "balloon";
 
-    b.style.setProperty("--speed", (6 + Math.random()*5) + "s");
+        const size = 40 + Math.random() * 60;
+        b.style.width = size + "px";
+        b.style.height = size * 1.25 + "px";
+        b.style.left = Math.random() * 95 + "vw";
 
-    document.body.appendChild(b);
+        const c1 = `rgb(${200 + Math.random() * 55}, ${80 + Math.random() * 120}, ${140 + Math.random() * 120})`;
+        const c2 = `rgb(${120 + Math.random() * 135}, ${120 + Math.random() * 80}, ${120 + Math.random() * 80})`;
 
-    setTimeout(()=> b.remove(), 9000);
-  }
-}
+        b.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
 
-function startConfetti(){
-  launchConfetti();
-  createBalloons();
-}
+        b.style.setProperty("--speed", (6 + Math.random() * 5) + "s");
 
-/* ------------------ OPEN GIFT ------------------ */
-function openGift() {
-  if(opened) return;
-  opened = true;
+        document.body.appendChild(b);
 
-  const gift = document.getElementById('gift');
-  const tapText = document.querySelector('.tap-to-open');
+        setTimeout(() => b.remove(), 9000);
+      }
+    }
 
-  gift.style.animation='none';
-  gift.style.transform='scale(1.1) rotate(10deg)';
+    function startConfetti() {
+      launchConfetti();
+      createBalloons();
+    }
 
-  setTimeout(()=>{
-    gift.style.transform='scale(0)';
-    tapText.style.display='none';
-    setTimeout(()=>{
-      gift.style.display='none';
-      celebration.style.display='flex';
-      startTyping();
-      playMusic();
-      startConfetti();
-      celebration.onclick = () => {
-        if(galleryLink) window.location.href = galleryLink;
-      };
-    },400);
-  },400);
-}
-</script>
+    /* ------------------ OPEN GIFT ------------------ */
+    function openGift() {
+      if (opened) return;
+      opened = true;
+
+      const gift = document.getElementById('gift');
+      const tapText = document.querySelector('.tap-to-open');
+
+      gift.style.animation = 'none';
+      gift.style.transform = 'scale(1.1) rotate(10deg)';
+
+      setTimeout(() => {
+        gift.style.transform = 'scale(0)';
+        tapText.style.display = 'none';
+        setTimeout(() => {
+          gift.style.display = 'none';
+          celebration.style.display = 'flex';
+          startTyping();
+          playMusic();
+          startConfetti();
+          celebration.onclick = () => {
+            if (galleryLink) window.location.href = galleryLink;
+          };
+        }, 400);
+      }, 400);
+    }
+  </script>
 
 </body>
+
 </html>
