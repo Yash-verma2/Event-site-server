@@ -699,7 +699,7 @@
         if (musicUrl && musicUrl !== "{{ music }}") {
             audio.src = musicUrl;
         } else {
-            audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+            audio.src = "{{ music }}";
         }
 
         // Update gallery link on page load
