@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>{{ name }} - Gallery</title>
@@ -41,7 +42,7 @@
       transform: translate(-50%, -50%) rotateY(calc(var(--i) * 45deg)) translateZ(300px);
       border-radius: 20px;
       object-fit: cover;
-      -webkit-box-reflect: below 0px linear-gradient(transparent, transparent, rgba(0,0,0,0.2));
+      -webkit-box-reflect: below 0px linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.2));
       transition: all 0.5s ease;
     }
 
@@ -61,9 +62,17 @@
     }
 
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     audio {
@@ -82,96 +91,115 @@
     }
 
     @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
     }
 
     @media (max-width: 600px) {
-      .center-text { font-size: 1.5rem; margin-top: 10px; }
-      .carousel { width: 85vw; height: 85vw; }
-      .carousel img { width: 65%; max-height: 220px; }
+      .center-text {
+        font-size: 1.5rem;
+        margin-top: 10px;
+      }
+
+      .carousel {
+        width: 85vw;
+        height: 85vw;
+      }
+
+      .carousel img {
+        width: 65%;
+        max-height: 220px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div class="center-text">{{ title }} {{ name }}</div>
+  <div class="center-text">{{ title }} {{ name }}</div>
 
 
-<div class="carousel" id="carousel">
-  {% for img in images %}
+  <div class="carousel" id="carousel">
+    {% for img in images %}
     <img src="{{ img }}" style="--i: {{ loop.index0 }};">
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
 
 
-<audio id="bgMusic" src="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb1.mp3" loop></audio>
+  <audio id="bgMusic" src="{{ music }}" loop></audio>
 
-<script>
-let carousel = document.getElementById('carousel');
-let rotateY = 0;
-let isDragging = false;
-let startX = 0;
-let currentX = 0;
+  <script>
+    let carousel = document.getElementById('carousel');
+    let rotateY = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
 
-function autoRotate() {
-  if (!isDragging) {
-    rotateY -= 0.2;
-    carousel.style.transform = `rotateY(${rotateY}deg)`;
-  }
-  requestAnimationFrame(autoRotate);
-}
-autoRotate();
+    function autoRotate() {
+      if (!isDragging) {
+        rotateY -= 0.2;
+        carousel.style.transform = `rotateY(${rotateY}deg)`;
+      }
+      requestAnimationFrame(autoRotate);
+    }
+    autoRotate();
 
-carousel.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  startX = e.pageX - rotateY;
-});
-carousel.addEventListener('mousemove', (e) => {
-  if (!isDragging) return;
-  currentX = e.pageX;
-  rotateY = currentX - startX;
-  carousel.style.transform = `rotateY(${rotateY}deg)`;
-});
-carousel.addEventListener('mouseup', () => isDragging = false);
-carousel.addEventListener('mouseleave', () => isDragging = false);
+    carousel.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.pageX - rotateY;
+    });
+    carousel.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      currentX = e.pageX;
+      rotateY = currentX - startX;
+      carousel.style.transform = `rotateY(${rotateY}deg)`;
+    });
+    carousel.addEventListener('mouseup', () => isDragging = false);
+    carousel.addEventListener('mouseleave', () => isDragging = false);
 
-carousel.addEventListener('touchstart', (e) => {
-  isDragging = true;
-  startX = e.touches[0].pageX - rotateY;
-});
-carousel.addEventListener('touchmove', (e) => {
-  if (!isDragging) return;
-  currentX = e.touches[0].pageX;
-  rotateY = currentX - startX;
-  carousel.style.transform = `rotateY(${rotateY}deg)`;
-});
-carousel.addEventListener('touchend', () => isDragging = false);
+    carousel.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].pageX - rotateY;
+    });
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].pageX;
+      rotateY = currentX - startX;
+      carousel.style.transform = `rotateY(${rotateY}deg)`;
+    });
+    carousel.addEventListener('touchend', () => isDragging = false);
 
-function createConfetti() {
-  const confetti = document.createElement('div');
-  confetti.classList.add('confetti');
-  confetti.style.left = Math.random() * 100 + 'vw';
-  confetti.style.animationDuration = (5 + Math.random() * 5) + 's';
-  confetti.style.opacity = Math.random();
-  document.body.appendChild(confetti);
-  setTimeout(() => { confetti.remove(); }, 10000);
-}
-setInterval(createConfetti, 200);
+    function createConfetti() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDuration = (5 + Math.random() * 5) + 's';
+      confetti.style.opacity = Math.random();
+      document.body.appendChild(confetti);
+      setTimeout(() => { confetti.remove(); }, 10000);
+    }
+    setInterval(createConfetti, 200);
 
-window.addEventListener('touchstart', playMusic, { once: true });
-window.addEventListener('click', playMusic, { once: true });
+    window.addEventListener('touchstart', playMusic, { once: true });
+    window.addEventListener('click', playMusic, { once: true });
 
-function playMusic() {
-  const music = document.getElementById('bgMusic');
-  if (music.paused) {
-    music.volume = 0.5;
-    music.play().catch(()=>{});
-  }
-}
+    function playMusic() {
+      const music = document.getElementById('bgMusic');
+      if (music.paused) {
+        music.volume = 0.5;
+        music.play().catch(() => { });
+      }
+    }
 
-</script>
+  </script>
 
 </body>
+
 </html>

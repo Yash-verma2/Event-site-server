@@ -3,16 +3,26 @@ import uuid
 import json
 import time
 import logging
+import requests
 from concurrent.futures import ThreadPoolExecutor
 
-from flask import Flask, render_template, request, url_for, send_from_directory, jsonify, abort
+from flask import Flask, render_template, request, url_for, jsonify, abort
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 from PIL import Image
+import io
+
+# Cloudinary Imports
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # ---------------- LOGGING CONFIGURATION ----------------
-# Production logging format
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -22,10 +32,12 @@ logger = logging.getLogger(__name__)
 
 # ---------------- CONFIGURATION ----------------
 class Config:
-    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', 'generated')
-    # Secret key should be loaded from environment variable in production
+    # Cloudinary Config
+    CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME')
+    CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+    CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+    
     SECRET_KEY = os.environ.get('SECRET_KEY', 'default-dev-key-please-change')
-    # Limit max upload size to 100MB to prevent DoS attacks
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024 
     ALLOWED_IMAGES = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
     ALLOWED_MUSIC = {'mp3', 'wav', 'ogg'}
@@ -36,24 +48,28 @@ class Config:
 app = Flask(__name__, static_url_path="/static", static_folder="static", template_folder="templates")
 app.config.from_object(Config)
 
-# CORS: Allow all origins for now, but in real production, restrict this to your frontend domain
+# Configure Cloudinary
+if Config.CLOUDINARY_CLOUD_NAME and Config.CLOUDINARY_API_KEY and Config.CLOUDINARY_API_SECRET:
+    cloudinary.config(
+        cloud_name=Config.CLOUDINARY_CLOUD_NAME,
+        api_key=Config.CLOUDINARY_API_KEY,
+        api_secret=Config.CLOUDINARY_API_SECRET
+    )
+    logger.info("Cloudinary configured successfully.")
+else:
+    logger.warning("Cloudinary credentials missing! App will fail to upload.")
+
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Ensure storage exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-# Thread pool for async tasks (1 pool per worker process)
+# Thread pool
 executor = ThreadPoolExecutor(max_workers=4)
 
 # ---------------- SECURITY HEADERS ----------------
 @app.after_request
 def add_security_headers(response):
-    """Add standard security headers for production."""
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     response.headers['X-XSS-Protection'] = '1; mode=block'
-    # HSTS - Force HTTPS (Uncomment if running strictly over HTTPS)
-    # response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     return response
 
 # ---------------- ERROR HANDLERS ----------------
@@ -75,43 +91,100 @@ def internal_error(e):
 def allowed(filename, types):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in types
 
-def process_image_task(file_storage, save_path):
+def upload_image_task(file_storage, public_id, folder):
     """
-    Worker function to resize and optimize images.
-    Run in a separate thread to avoid blocking the main request.
+    Worker function to upload images to Cloudinary.
     """
     try:
-        img = Image.open(file_storage)
-        if img.mode in ("RGBA", "P"):
-            img = img.convert("RGB")
-            
-        img.thumbnail(Config.MAX_IMAGE_SIZE)
+        # Reset file pointer
+        file_storage.seek(0)
         
-        # optimize=True strips metadata, quality=85 balances size/visuals
-        img.save(save_path, optimize=True, quality=85) 
-        return True
+        # Upload to Cloudinary
+        # transformation={'width': 1024, 'height': 1024, 'crop': 'limit', 'quality': 'auto'}
+        result = cloudinary.uploader.upload(
+            file_storage,
+            public_id=public_id,
+            folder=folder,
+            resource_type="image",
+            transformation=[
+                {'width': 1024, 'height': 1024, 'crop': 'limit'},
+                {'quality': 'auto', 'fetch_format': 'auto'}
+            ]
+        )
+        return result.get('secure_url')
     except Exception as e:
-        logger.error(f"Failed to process image {save_path}: {str(e)}")
-        return False
+        logger.error(f"Failed to upload image {public_id}: {str(e)}")
+        return None
+
+def upload_raw_task(data, public_id, folder):
+    """
+    Uploads JSON data as a raw file to Cloudinary.
+    """
+    try:
+        # Convert dict to JSON string bytes
+        json_data = json.dumps(data).encode('utf-8')
+        
+        result = cloudinary.uploader.upload(
+            json_data,
+            public_id=public_id,
+            folder=folder,
+            resource_type="raw",
+            format="json" # Force extension
+        )
+        return result.get('secure_url')
+    except Exception as e:
+        logger.error(f"Failed to upload manifest {public_id}: {str(e)}")
+        return None
+
+def get_manifest_from_cloudinary(uid):
+    """
+    Fetches the manifest.json from Cloudinary using the public ID convention.
+    """
+    try:
+        # Construct the URL based on convention: folder/manifest_{uid}.json
+        # Or search for it. But constructing URL is faster if we know the structure.
+        # However, 'raw' files in Cloudinary might have version numbers in URL.
+        # Better to use the Admin API or just try to fetch via a predictable URL if possible.
+        # BUT, Cloudinary URLs for raw files usually look like:
+        # https://res.cloudinary.com/<cloud_name>/raw/upload/v<version>/<folder>/<public_id>
+        # We don't know the version.
+        # Alternative: Use the Search API (rate limited) or just store the manifest URL in the client?
+        # The client only has the UID.
+        # 
+        # SOLUTION: We will use `cloudinary.api.resource` to get the details (including URL)
+        # This requires the Admin API (which uses the same credentials).
+        
+        public_id = f"birthday_app/{uid}/manifest_{uid}.json"
+        # Note: For raw files, the extension is part of the public_id usually if specified, 
+        # but let's check how we uploaded it.
+        
+        # Actually, for high traffic, using the Admin API for every read is bad (rate limits).
+        # A better stateless way:
+        # When we generate, we return the UID.
+        # The manifest URL is NOT predictable without the version if we want to be 100% sure, 
+        # BUT Cloudinary supports fetching without version if we accept cached content.
+        # URL format: https://res.cloudinary.com/<cloud_name>/raw/upload/<folder>/<public_id>
+        
+        cloud_name = Config.CLOUDINARY_CLOUD_NAME
+        url = f"https://res.cloudinary.com/{cloud_name}/raw/upload/birthday_app/{uid}/manifest_{uid}.json"
+        
+        # Fetch the JSON
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.warning(f"Manifest not found at {url}: {response.status_code}")
+            return None
+            
+    except Exception as e:
+        logger.error(f"Error fetching manifest for {uid}: {e}")
+        return None
 
 # ---------------- ROUTES ----------------
 
 @app.route('/health')
 def health():
-    """
-    Production health check. 
-    Verifies the app is running AND filesystem is writable.
-    """
-    try:
-        # Check write permissions
-        test_file = os.path.join(app.config['UPLOAD_FOLDER'], '.health')
-        with open(test_file, 'w') as f:
-            f.write('ok')
-        os.remove(test_file)
-        return jsonify({"status": "healthy", "storage": "writable"}), 200
-    except Exception as e:
-        logger.critical(f"Health check failed: {e}")
-        return jsonify({"status": "unhealthy", "error": str(e)}), 503
+    return jsonify({"status": "healthy", "storage": "cloudinary"}), 200
 
 @app.route('/')
 def landing():
@@ -136,71 +209,102 @@ def generate():
             title_map = {
                 'birthday.html': "🎉 Happy Birthday",
                 'anniversary.html': "💖 Happy Anniversary",
-                'birthday2.html': "🎊 Happy Birthday"
+                'birthday2.html': "🎊 Happy Birthday",
+                'birthday3.html': "🎊 Happy Birthday"
             }
             title = title_map.get(template, "🎉 Celebration")
         else:
             title = user_title
 
-        # Create directory structure
+        # Unique ID for this page
         uid = uuid.uuid4().hex[:10]
-        base_path = os.path.join(app.config['UPLOAD_FOLDER'], uid)
-        asset_dir = os.path.join(base_path, "assets")
-        os.makedirs(asset_dir, exist_ok=True)
+        folder_name = f"birthday_app/{uid}"
 
         # --- Parallel Asset Processing ---
-        futures = []
+        futures = {} # map future to type
         
-        def get_asset_url(fname):
-            return url_for("assets", uid=uid, filename=fname, _external=True)
-
         # Helper to process an upload
-        def handle_upload(file_obj, prefix, default_url):
+        def handle_upload(file_obj, prefix):
             if file_obj and allowed(file_obj.filename, Config.ALLOWED_IMAGES):
-                safe_name = secure_filename(file_obj.filename)
-                fname = f"{uid}_{prefix}_{safe_name}"
-                save_path = os.path.join(asset_dir, fname)
-                futures.append(executor.submit(process_image_task, file_obj, save_path))
-                return get_asset_url(fname)
+                safe_name = secure_filename(file_obj.filename).rsplit('.', 1)[0] # remove extension
+                public_id = f"{prefix}_{safe_name}"
+                return executor.submit(upload_image_task, file_obj, public_id, folder_name)
             return None
 
         # 1. Main & Gift Images
-        main_url = handle_upload(request.files.get("main_image"), "main", None)
-        if not main_url: 
+        main_future = handle_upload(request.files.get("main_image"), "main")
+        gift_future = handle_upload(request.files.get("gift_image"), "gift")
+
+        # 2. Gallery Images
+        gallery_futures = []
+        for i, g_file in enumerate(request.files.getlist("gallery")[:Config.MAX_GALLERY]):
+            fut = handle_upload(g_file, f"gallery_{i}")
+            if fut:
+                gallery_futures.append(fut)
+
+        # 3. Music (Upload as raw or video resource_type='video' for audio in Cloudinary)
+        # For simplicity, let's keep music handling simple. 
+        # If user uploads music, we upload it.
+        music_file = request.files.get("music")
+        music_url = "/static/default_music.mp3" # Default fallback
+        music_future = None
+        
+        if music_file and allowed(music_file.filename, Config.ALLOWED_MUSIC):
+             # Cloudinary treats audio as 'video' resource type usually, or 'raw'
+             # Let's use 'video' for audio to get streaming capabilities if needed, or just 'auto'
+             # For simple mp3, 'video' resource type is correct.
+             pass 
+             # TODO: Implement music upload if needed. For now, let's stick to defaults or external URLs 
+             # to save bandwidth/complexity, or upload as raw.
+             # Let's skip custom music upload to Cloudinary for this iteration to reduce risk, 
+             # unless requested. The prompt didn't explicitly ask for music persistence but "link" persistence.
+             # But if we don't persist music, the custom music will be lost.
+             # Let's try to upload it.
+             
+             def upload_music_task(f_obj, pid, fldr):
+                 f_obj.seek(0)
+                 res = cloudinary.uploader.upload(f_obj, public_id=pid, folder=fldr, resource_type="video")
+                 return res.get('secure_url')
+                 
+             safe_music_name = secure_filename(music_file.filename).rsplit('.', 1)[0]
+             music_future = executor.submit(upload_music_task, music_file, f"music_{safe_music_name}", folder_name)
+
+        # --- Resolve Futures ---
+        
+        # Main Image
+        main_url = None
+        if main_future:
+            main_url = main_future.result()
+        if not main_url:
             main_url = request.form.get("main_image_selected")
 
-        gift_url = handle_upload(request.files.get("gift_image"), "gift", None)
+        # Gift Image
+        gift_url = None
+        if gift_future:
+            gift_url = gift_future.result()
         if not gift_url:
             gift_url = request.form.get("gift_image_selected") or "/static/default_gift.png"
 
-        # 2. Gallery Images
+        # Gallery Images
         gallery_urls = []
-        for g_file in request.files.getlist("gallery")[:Config.MAX_GALLERY]:
-            url = handle_upload(g_file, "g", None)
+        for fut in gallery_futures:
+            url = fut.result()
             if url:
                 gallery_urls.append(url)
-
-        # 3. Music (Synchronous copy)
-        music_file = request.files.get("music")
-        music_url = "/static/default_music.mp3"
         
-        if music_file and allowed(music_file.filename, Config.ALLOWED_MUSIC):
-            fname = f"{uid}_music_{secure_filename(music_file.filename)}"
-            music_file.save(os.path.join(asset_dir, fname))
-            music_url = get_asset_url(fname)
+        # Music
+        if music_future:
+            uploaded_music_url = music_future.result()
+            if uploaded_music_url:
+                music_url = uploaded_music_url
         else:
-            # Fallback options
-            music_url = request.form.get('music_selected') or request.form.get('music_option') or music_url
-
-        # --- Wait for Image Processing ---
-        # We wait for images to ensure they exist before sending the JSON response
-        for future in futures:
-            future.result()
+             music_url = request.form.get('music_selected') or request.form.get('music_option') or music_url
 
         # --- Create Manifest ---
         manifest_data = {
             "template": template,
             "created_at": time.time(),
+            "uid": uid,
             "context": {
                 "name": name,
                 "title": title,
@@ -213,8 +317,12 @@ def generate():
             }
         }
 
-        with open(os.path.join(base_path, "manifest.json"), "w") as f:
-            json.dump(manifest_data, f)
+        # Upload Manifest to Cloudinary
+        # We upload it as a raw file so we can fetch it back later
+        manifest_url = upload_raw_task(manifest_data, f"manifest_{uid}.json", folder_name)
+        
+        if not manifest_url:
+            raise Exception("Failed to save page data (manifest upload failed)")
 
         duration = time.time() - start_time
         logger.info(f"[{request_id}] Generation complete in {duration:.2f}s. UID: {uid}")
@@ -231,14 +339,10 @@ def generate():
 @app.route('/generated/<uid>/')
 def generated_page(uid):
     try:
-        base_path = os.path.join(app.config['UPLOAD_FOLDER'], uid)
-        manifest_path = os.path.join(base_path, "manifest.json")
+        data = get_manifest_from_cloudinary(uid)
         
-        if not os.path.exists(manifest_path):
+        if not data:
             abort(404)
-
-        with open(manifest_path, 'r') as f:
-            data = json.load(f)
 
         return render_template(data['template'], **data['context'])
     except Exception as e:
@@ -248,14 +352,10 @@ def generated_page(uid):
 @app.route('/generated/<uid>/gallery')
 def gallery_page(uid):
     try:
-        base_path = os.path.join(app.config['UPLOAD_FOLDER'], uid)
-        manifest_path = os.path.join(base_path, "manifest.json")
+        data = get_manifest_from_cloudinary(uid)
         
-        if not os.path.exists(manifest_path):
+        if not data:
             abort(404)
-            
-        with open(manifest_path, 'r') as f:
-            data = json.load(f)
             
         ctx = data['context']
         return render_template(
@@ -268,12 +368,6 @@ def gallery_page(uid):
     except Exception:
         abort(404)
 
-@app.route('/generated/<uid>/assets/<filename>')
-def assets(uid, filename):
-    # Securely serve files from the specific UID folder
-    return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], uid, "assets"), filename)
-
 if __name__ == "__main__":
     print("WARNING: Run with Gunicorn in production!")
-    print("Example: gunicorn -c gunicorn_config.py app:app")
     app.run(host="0.0.0.0", port=5001, debug=True)
