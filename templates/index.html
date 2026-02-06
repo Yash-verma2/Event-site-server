@@ -235,6 +235,8 @@
               <option value="anniversary.html"
                 data-preview="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/previews/anversary-preview.png">
                 💑 Anniversary</option>
+              <option value="valentine.html" data-preview="/static/previews/valentine_preview.png">
+                💘 Valentine's Special</option>
             </select>
           </div>
 
@@ -335,26 +337,97 @@
 
         <!-- Music Section -->
         <div class="space-y-4">
-          <label class="block text-sm font-semibold text-slate-700">Background Music</label>
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-sm font-semibold text-slate-700">Background Music</label>
+            <button type="button" onclick="toggleMusicSearch()"
+              class="group text-xs text-sky-600 font-medium hover:text-sky-700 flex items-center gap-1 transition-all bg-sky-50 px-3 py-1.5 rounded-full hover:bg-sky-100">
+              <span class="group-hover:scale-110 transition-transform">🔍</span>
+              Search Library
+            </button>
+          </div>
+
+          <!-- Professional Music Search UI -->
+          <div id="musicSearchContainer"
+            class="hidden mb-6 bg-white/80 backdrop-blur-xl border border-white/50 shadow-xl rounded-2xl p-5 animate-fadeIn relative overflow-hidden z-20">
+            <!-- Decorative elements -->
+            <div
+              class="absolute top-0 right-0 w-32 h-32 bg-sky-200/30 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none">
+            </div>
+
+            <!-- Search Header -->
+            <div class="relative z-10 space-y-4">
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+                <input type="text" id="musicSearchInput" placeholder="Search for 'Happy Birthday', 'Ed Sheeran'..."
+                  class="w-full pl-10 pr-4 py-3 bg-white/60 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all shadow-sm"
+                  onkeyup="handleDebounceSearch(event)">
+              </div>
+
+              <!-- Tags / Quick Filters -->
+              <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                <button type="button" onclick="quickSearch('Happy Birthday')"
+                  class="whitespace-nowrap px-3 py-1 bg-sky-100/50 text-sky-700 text-xs rounded-full hover:bg-sky-200/50 transition-colors border border-sky-100">🎂
+                  Birthday</button>
+                <button type="button" onclick="quickSearch('Love Songs')"
+                  class="whitespace-nowrap px-3 py-1 bg-pink-100/50 text-pink-700 text-xs rounded-full hover:bg-pink-200/50 transition-colors border border-pink-100">💖
+                  Romantic</button>
+                <button type="button" onclick="quickSearch('Party Pop')"
+                  class="whitespace-nowrap px-3 py-1 bg-purple-100/50 text-purple-700 text-xs rounded-full hover:bg-purple-200/50 transition-colors border border-purple-100">🎉
+                  Party</button>
+                <button type="button" onclick="quickSearch('Instrumental')"
+                  class="whitespace-nowrap px-3 py-1 bg-indigo-100/50 text-indigo-700 text-xs rounded-full hover:bg-indigo-200/50 transition-colors border border-indigo-100">🎻
+                  Instrumental</button>
+              </div>
+
+              <!-- Results Area -->
+              <div class="space-y-2">
+                <h4 id="resultsTitle" class="text-xs font-bold text-slate-400 uppercase tracking-wider hidden">Trending
+                  Now</h4>
+                <div id="musicSearchResults" class="max-h-64 overflow-y-auto custom-scrollbar pr-1 hidden">
+                  <!-- Results injected here -->
+                </div>
+
+                <!-- Loading State -->
+                <div id="searchLoading" class="hidden py-8 flex flex-col items-center justify-center text-slate-400">
+                  <svg class="w-8 h-8 animate-spin text-sky-500 mb-2" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                  </svg>
+                  <span class="text-xs font-medium">Finding the perfect tune...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <label class="block text-sm font-semibold text-slate-700 sr-only">Background Music Selector</label>
           <select id="music_selector" name="music_option"
             class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none text-slate-700">
             <option value="" selected>🎵 Select a melody...</option>
-            <option
-              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb1.mp3">
-              Happy Birthday Classic</option>
-            <option
-              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb2.mp3">
-              Upbeat Celebration</option>
-            <option
-              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb3.mp3">
-              Piano Serenade</option>
-            <option
-              value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb4.mp3">
-              Party Vibes</option>
+            <optgroup label="🎂 Birthday Beats">
+              <option
+                value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb1.mp3">
+                Happy Birthday Classic</option>
+              <option
+                value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb2.mp3">
+                Upbeat Celebration</option>
+              <option
+                value="https://raw.githubusercontent.com/Yash-verma2/Event-site-server/main/templates/static/music/hb4.mp3">
+                Party Vibes</option>
+            </optgroup>
+
+
           </select>
           <input type="hidden" name="music_selected" id="music_selected" value="">
 
-          <audio id="music_preview" controls class="hidden w-full h-10 rounded-lg bg-slate-100"></audio>
+          <audio id="music_preview" controls loop class="hidden w-full h-10 rounded-lg bg-slate-100"></audio>
+          <div id="spotify_preview_container" class="hidden mt-2 w-full"></div>
 
           <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
@@ -613,24 +686,41 @@
     // Music Preview
     document.getElementById("music_selector").addEventListener("change", function () {
       const audio = document.getElementById("music_preview");
+      const spotifyContainer = document.getElementById("spotify_preview_container");
       const selected = this.value;
 
+      // Reset
+      audio.pause();
+      audio.classList.add("hidden");
+      spotifyContainer.classList.add("hidden");
+      spotifyContainer.innerHTML = "";
+      document.getElementById("music_selected").value = "";
+
       if (selected) {
-        audio.src = selected;
-        audio.classList.remove("hidden");
-        audio.play().catch(e => console.log("Auto-play prevented"));
         document.getElementById("music_selected").value = selected;
         document.getElementById("music_upload").value = "";
-      } else {
-        audio.pause();
-        audio.classList.add("hidden");
-        document.getElementById("music_selected").value = "";
+
+        if (selected.includes('spotify.com')) {
+          // Spotify Embed Preview
+          spotifyContainer.classList.remove("hidden");
+          spotifyContainer.innerHTML = `<iframe src="${selected}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" class="rounded-lg"></iframe>`;
+        } else {
+          // Standard Audio Preview
+          audio.src = selected;
+          audio.classList.remove("hidden");
+          audio.play().catch(e => console.log("Auto-play prevented"));
+        }
       }
     });
 
     document.getElementById("music_upload").addEventListener("change", function () {
       const file = this.files[0];
       const audio = document.getElementById("music_preview");
+      const spotifyContainer = document.getElementById("spotify_preview_container");
+
+      // Reset Spotify
+      spotifyContainer.classList.add("hidden");
+      spotifyContainer.innerHTML = "";
 
       if (file) {
         const url = URL.createObjectURL(file);
@@ -769,17 +859,216 @@
           url: link
         }).catch(console.error);
       } else {
-        // Fallback
+        // Fallback: Copy link and show toast
         copyLink();
-        if (type === 'story') {
-          showToast("Link copied! Open Instagram Story to paste.");
-          // Optional: Try to open Instagram
-          setTimeout(() => window.open('https://instagram.com'), 1000);
-        } else {
-          showToast("Link copied! Open Instagram Chat to paste.");
-          setTimeout(() => window.open('https://instagram.com/direct/inbox/'), 1000);
+        showToast("Link copied! Open Instagram to share.");
+      }
+    }
+
+    // --- Professional Music Search Logic ---
+    let searchDebounce;
+    let currentPreviewAudio = null; // Track currently playing preview in search
+
+    function toggleMusicSearch() {
+      const container = document.getElementById('musicSearchContainer');
+      container.classList.toggle('hidden');
+
+      if (!container.classList.contains('hidden')) {
+        setTimeout(() => document.getElementById('musicSearchInput').focus(), 100);
+        // Load trending if empty
+        const results = document.getElementById('musicSearchResults');
+        if (results.children.length === 0) {
+          quickSearch('Happy Birthday');
         }
       }
+    }
+
+    function quickSearch(term) {
+      document.getElementById('musicSearchInput').value = term;
+      searchMusic(term);
+    }
+
+    function handleDebounceSearch(e) {
+      if (e.key === 'Enter') {
+        clearTimeout(searchDebounce);
+        searchMusic(e.target.value);
+        return;
+      }
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
+        searchMusic(e.target.value);
+      }, 800);
+    }
+
+    function searchMusic(term = null) {
+      const query = term || document.getElementById('musicSearchInput').value;
+      if (!query) return;
+
+      const resultsDiv = document.getElementById('musicSearchResults');
+      const loading = document.getElementById('searchLoading');
+      const title = document.getElementById('resultsTitle');
+
+      resultsDiv.classList.add('hidden');
+      loading.classList.remove('hidden');
+      title.classList.add('hidden');
+
+      // Stop any playing preview
+      stopSearchPreview();
+
+      fetch('/api/search-music', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: query })
+      })
+        .then(r => r.json())
+        .then(data => {
+          loading.classList.add('hidden');
+          resultsDiv.classList.remove('hidden');
+          resultsDiv.innerHTML = '';
+
+          if (data.results && data.results.length > 0) {
+            title.classList.remove('hidden');
+            title.textContent = "Search Results";
+
+            data.results.forEach(track => {
+              const div = document.createElement('div');
+              div.className = "flex items-center gap-3 p-2 hover:bg-sky-50/50 rounded-xl cursor-default border border-transparent hover:border-sky-100 transition-all group";
+
+              // Generate unique ID for this track's audio option
+              const trackId = `track-${Math.random().toString(36).substr(2, 9)}`;
+
+              div.innerHTML = `
+              <div class="relative w-12 h-12 shrink-0">
+                 <img src="${track.album_art || 'https://via.placeholder.com/48'}" class="w-full h-full rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow">
+                 <!-- Play/Pause Overlay -->
+                 <button type="button" onclick="playSearchPreview(this, '${track.url}', '${track.type}')" class="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50 text-white">
+                    <svg class="w-6 h-6 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg class="w-6 h-6 stop-icon hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+                 </button>
+              </div>
+              
+              <div class="flex-1 min-w-0 flex flex-col justify-center">
+                <p class="text-sm font-semibold text-slate-700 truncate">${track.title}</p>
+                <div class="flex items-center gap-2">
+                   <p class="text-xs text-slate-500 truncate max-w-[120px]">${track.artist}</p>
+                   ${track.type === 'spotify'
+                  ? '<span class="text-[10px] bg-[#1DB954]/10 text-[#1DB954] px-1.5 rounded-sm font-medium">Spotify</span>'
+                  : '<span class="text-[10px] bg-purple-100 text-purple-600 px-1.5 rounded-sm font-medium">Preview</span>'}
+                </div>
+              </div>
+              
+              <button type="button" onclick='selectTrack(${JSON.stringify(track)})' class="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-lg hover:bg-sky-500 hover:text-white hover:border-sky-500 transition-all shadow-sm">
+                Select
+              </button>
+            `;
+              resultsDiv.appendChild(div);
+            });
+          } else {
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.innerHTML = `
+            <div class="text-center py-6">
+               <div class="inline-block p-3 rounded-full bg-slate-50 mb-2">
+                  <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+               </div>
+               <p class="text-sm text-slate-500 font-medium">No results found.</p>
+               <p class="text-xs text-slate-400">Try a different song or artist</p>
+            </div>`;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          loading.classList.add('hidden');
+          showToast("Search failed", true);
+        });
+    }
+
+    // Preview in Search List (doesn't select)
+    function playSearchPreview(btn, url, type) {
+      // Note: iTunes previews (mp3) can be played directly. 
+      // Spotify links are usually embeds (iframe) not direct audio, so we might not be able to "preview" them easily in button without iframe.
+      // However, new MusicClient code returns 'preview_url' ? 
+      // MusicHelper: 'url' is Embed URL for Spotify. We can't play embed in a button efficiently.
+      // If Spotify, we'll just auto-select it maybe? Or show a toast "Spotify requires selection".
+
+      if (type === 'spotify') {
+        showToast("Select track to hear Spotify preview", true);
+        return;
+      }
+
+      const playIcon = btn.querySelector('.play-icon');
+      const stopIcon = btn.querySelector('.stop-icon');
+
+      if (currentPreviewAudio && currentPreviewAudio.src === url && !currentPreviewAudio.paused) {
+        stopSearchPreview();
+        return;
+      }
+
+      stopSearchPreview(); // Stop any other
+
+      const audio = new Audio(url);
+      audio.volume = 0.5;
+      audio.onended = () => {
+        playIcon.classList.remove('hidden');
+        stopIcon.classList.add('hidden');
+      };
+
+      audio.play();
+      currentPreviewAudio = audio;
+
+      // Update UI
+      playIcon.classList.add('hidden');
+      stopIcon.classList.remove('hidden');
+
+      // Store btn ref to reset icon later if needed
+      currentPreviewAudio.btnRef = btn;
+    }
+
+    function stopSearchPreview() {
+      if (currentPreviewAudio) {
+        currentPreviewAudio.pause();
+        if (currentPreviewAudio.btnRef) {
+          const btn = currentPreviewAudio.btnRef;
+          btn.querySelector('.play-icon').classList.remove('hidden');
+          btn.querySelector('.stop-icon').classList.add('hidden');
+        }
+        currentPreviewAudio = null;
+      }
+    }
+
+    function selectTrack(track) {
+      stopSearchPreview(); // Stop list preview
+
+      // 1. Update Hidden Input
+      document.getElementById('music_selected').value = track.url;
+
+      // 2. Clear dropdown
+      const selector = document.getElementById('music_selector');
+      selector.value = "";
+
+      // 3. UI Feedback
+
+      // 4. Trigger Main Preview Player
+      const audio = document.getElementById("music_preview");
+      const spotifyContainer = document.getElementById("spotify_preview_container");
+
+      if (track.type === 'spotify') {
+        audio.pause();
+        audio.classList.add("hidden");
+        spotifyContainer.classList.remove("hidden");
+        spotifyContainer.innerHTML = `<iframe src="${track.url}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" class="rounded-lg shadow-sm"></iframe>`;
+      } else {
+        spotifyContainer.classList.add("hidden");
+        spotifyContainer.innerHTML = "";
+
+        audio.src = track.url;
+        audio.loop = true; // Loop enabled
+        audio.classList.remove("hidden");
+        audio.play().catch(e => console.log("Auto-play prevented"));
+      }
+
+      // 5. Close Search only after short delay or keep open? Better close for compactness
+      document.getElementById('musicSearchContainer').classList.add('hidden');
+      showToast(`Selected: ${track.title} 🎵`);
     }
   </script>
 </body>

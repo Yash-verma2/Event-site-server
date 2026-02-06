@@ -656,11 +656,30 @@
         </div>
     </div>
 
-    <!-- --- AUDIO --- -->
-    <audio id="bg-music" loop>
-        <source src="{{ music }}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <!-- --- AUDIO SYSTEM --- -->
+    <div id="audio-container">
+        {% if music %}
+        {% if 'spotify.com' in music %}
+        <!-- Spotify Embed -->
+        <div id="spotify-player" class="fixed bottom-4 right-4 z-[100] transition-transform duration-500 translate-y-0">
+            <!-- We append ?autoplay=1 to try and trigger play, though browsers block it -->
+            <iframe src="{{ music }}" width="300" height="80" frameborder="0" allowtransparency="true"
+                allow="encrypted-media"></iframe>
+            <button onclick="document.getElementById('spotify-player').classList.toggle('translate-y-[150%]')"
+                class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <script>window.isSpotify = true;</script>
+        {% else %}
+        <!-- Standard Audio -->
+        <audio id="bg-music" loop>
+            <source src="{{ music }}" type="audio/mpeg">
+        </audio>
+        <script>window.isSpotify = false;</script>
+        {% endif %}
+        {% endif %}
+    </div>
 
     <!-- --- JAVASCRIPT LOGIC --- -->
     <script>
@@ -695,11 +714,13 @@
         console.log("Music URL:", musicUrl);
         console.log("Gallery Link:", galleryLink);
 
-        // Set audio source
-        if (musicUrl && musicUrl !== "{{ music }}") {
-            audio.src = musicUrl;
-        } else {
-            audio.src = "{{ music }}";
+        // Set audio source if standard audio
+        if (!window.isSpotify && audio) {
+            if (musicUrl && musicUrl !== "{{ music }}") {
+                audio.src = musicUrl;
+            } else {
+                audio.src = "{{ music }}";
+            }
         }
 
         // Update gallery link on page load
@@ -729,8 +750,14 @@
             mainContent.classList.remove('hidden-f');
             mainContent.style.opacity = '1';
 
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log("Audio requires interaction"));
+            if (!window.isSpotify) {
+                audio.volume = 0.5;
+                audio.play().catch(e => console.log("Audio requires interaction"));
+            } else {
+                // For Spotify, we just ensure it's visible. 
+                // We can't auto-play iframe content easily.
+                console.log("Spotify Player Ready");
+            }
 
             fireConfetti();
             startTyping();

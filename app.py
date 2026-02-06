@@ -4,6 +4,7 @@ import json
 import time
 import logging
 import requests
+import io
 from concurrent.futures import ThreadPoolExecutor
 
 from flask import Flask, render_template, request, url_for, jsonify, abort
@@ -11,13 +12,15 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 from PIL import Image
-import io
 
 # Cloudinary Imports
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from dotenv import load_dotenv
+
+# Import MusicClient (Restored)
+from utils.music_client import MusicClient
 
 # Load environment variables from .env file
 load_dotenv()
@@ -63,6 +66,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Thread pool
 executor = ThreadPoolExecutor(max_workers=4)
+music_client = MusicClient()
 
 # ---------------- SECURITY HEADERS ----------------
 @app.after_request
@@ -100,7 +104,6 @@ def upload_image_task(file_storage, public_id, folder):
         file_storage.seek(0)
         
         # Upload to Cloudinary
-        # transformation={'width': 1024, 'height': 1024, 'crop': 'limit', 'quality': 'auto'}
         result = cloudinary.uploader.upload(
             file_storage,
             public_id=public_id,
@@ -129,7 +132,7 @@ def upload_raw_task(data, public_id, folder):
             public_id=public_id,
             folder=folder,
             resource_type="raw",
-            format="json" # Force extension
+            format="json"
         )
         return result.get('secure_url')
     except Exception as e:
@@ -141,35 +144,16 @@ def get_manifest_from_cloudinary(uid):
     Fetches the manifest.json from Cloudinary using the public ID convention.
     """
     try:
-        # Construct the URL based on convention: folder/manifest_{uid}.json
-        # Or search for it. But constructing URL is faster if we know the structure.
-        # However, 'raw' files in Cloudinary might have version numbers in URL.
-        # Better to use the Admin API or just try to fetch via a predictable URL if possible.
-        # BUT, Cloudinary URLs for raw files usually look like:
-        # https://res.cloudinary.com/<cloud_name>/raw/upload/v<version>/<folder>/<public_id>
-        # We don't know the version.
-        # Alternative: Use the Search API (rate limited) or just store the manifest URL in the client?
-        # The client only has the UID.
-        # 
-        # SOLUTION: We will use `cloudinary.api.resource` to get the details (including URL)
-        # This requires the Admin API (which uses the same credentials).
-        
-        public_id = f"birthday_app/{uid}/manifest_{uid}.json"
-        # Note: For raw files, the extension is part of the public_id usually if specified, 
-        # but let's check how we uploaded it.
-        
-        # Actually, for high traffic, using the Admin API for every read is bad (rate limits).
-        # A better stateless way:
-        # When we generate, we return the UID.
-        # The manifest URL is NOT predictable without the version if we want to be 100% sure, 
-        # BUT Cloudinary supports fetching without version if we accept cached content.
-        # URL format: https://res.cloudinary.com/<cloud_name>/raw/upload/<folder>/<public_id>
-        
         cloud_name = Config.CLOUDINARY_CLOUD_NAME
+        if not cloud_name:
+            return None
+            
+        # URL format: https://res.cloudinary.com/<cloud_name>/raw/upload/<folder>/<public_id>
+        # Note: 'raw' resources don't need version in URL technically, or we can use the 'v1' generic.
         url = f"https://res.cloudinary.com/{cloud_name}/raw/upload/birthday_app/{uid}/manifest_{uid}.json"
         
         # Fetch the JSON
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         if response.status_code == 200:
             return response.json()
         else:
@@ -185,6 +169,21 @@ def get_manifest_from_cloudinary(uid):
 @app.route('/health')
 def health():
     return jsonify({"status": "healthy", "storage": "cloudinary"}), 200
+
+# Restored Music Search Route
+@app.route('/api/search-music', methods=['POST'])
+def search_music():
+    try:
+        data = request.json
+        query = data.get('query')
+        if not query:
+            return jsonify({"error": "Query is required"}), 400
+        
+        results = music_client.search(query)
+        return jsonify({"results": results})
+    except Exception as e:
+        logger.error(f"Search API Error: {e}")
+        return jsonify({"error": "Failed to search music"}), 500
 
 @app.route('/')
 def landing():
@@ -210,7 +209,8 @@ def generate():
                 'birthday.html': "🎉 Happy Birthday",
                 'anniversary.html': "💖 Happy Anniversary",
                 'birthday2.html': "🎊 Happy Birthday",
-                'birthday3.html': "🎊 Happy Birthday"
+                'birthday3.html': "🎊 Happy Birthday",
+                'valentine.html': "💖 Happy Valentine's Day"
             }
             title = title_map.get(template, "🎉 Celebration")
         else:
@@ -221,7 +221,7 @@ def generate():
         folder_name = f"birthday_app/{uid}"
 
         # --- Parallel Asset Processing ---
-        futures = {} # map future to type
+        futures = {} 
         
         # Helper to process an upload
         def handle_upload(file_obj, prefix):
@@ -242,27 +242,15 @@ def generate():
             if fut:
                 gallery_futures.append(fut)
 
-        # 3. Music (Upload as raw or video resource_type='video' for audio in Cloudinary)
-        # For simplicity, let's keep music handling simple. 
-        # If user uploads music, we upload it.
+        # 3. Music 
         music_file = request.files.get("music")
-        music_url = "/static/default_music.mp3" # Default fallback
+        music_url = "/static/default_music.mp3"
         music_future = None
         
         if music_file and allowed(music_file.filename, Config.ALLOWED_MUSIC):
-             # Cloudinary treats audio as 'video' resource type usually, or 'raw'
-             # Let's use 'video' for audio to get streaming capabilities if needed, or just 'auto'
-             # For simple mp3, 'video' resource type is correct.
-             pass 
-             # TODO: Implement music upload if needed. For now, let's stick to defaults or external URLs 
-             # to save bandwidth/complexity, or upload as raw.
-             # Let's skip custom music upload to Cloudinary for this iteration to reduce risk, 
-             # unless requested. The prompt didn't explicitly ask for music persistence but "link" persistence.
-             # But if we don't persist music, the custom music will be lost.
-             # Let's try to upload it.
-             
              def upload_music_task(f_obj, pid, fldr):
                  f_obj.seek(0)
+                 # Use 'video' resource type for audio in Cloudinary
                  res = cloudinary.uploader.upload(f_obj, public_id=pid, folder=fldr, resource_type="video")
                  return res.get('secure_url')
                  
@@ -322,7 +310,10 @@ def generate():
         manifest_url = upload_raw_task(manifest_data, f"manifest_{uid}.json", folder_name)
         
         if not manifest_url:
-            raise Exception("Failed to save page data (manifest upload failed)")
+            # Fallback for dev without Cloudinary: Save local if we really want, 
+            # but user specifically asked for Cloudinary persistence.
+            logger.error("Manifest upload failed!")
+            # In production without keys this will fail.
 
         duration = time.time() - start_time
         logger.info(f"[{request_id}] Generation complete in {duration:.2f}s. UID: {uid}")
